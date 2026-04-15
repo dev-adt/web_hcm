@@ -22,14 +22,7 @@ function setupPassport(app) {
     return false;
   }
 
-  app.use(require('express-session')({
-    secret: process.env.JWT_SECRET || 'session-secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: process.env.NODE_ENV === 'production', maxAge: 24 * 60 * 60 * 1000 }
-  }));
   app.use(passport.initialize());
-  app.use(passport.session());
 
   passport.use(new GoogleStrategy({
     clientID:     GOOGLE_CLIENT_ID,
@@ -83,12 +76,6 @@ function setupPassport(app) {
       return done(err, null);
     }
   }));
-
-  passport.serializeUser((user, done) => done(null, user.id));
-  passport.deserializeUser((id, done) => {
-    const user = db.get('users').find({ id }).value();
-    done(null, user || false);
-  });
 
   console.log('✅ Google OAuth enabled');
   return true;

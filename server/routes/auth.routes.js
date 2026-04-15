@@ -25,7 +25,7 @@ router.get('/google',
     if (!isGoogleOAuthEnabled()) {
       return res.status(503).json({ success: false, message: 'Google OAuth chưa được cấu hình.' });
     }
-    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+    passport.authenticate('google', { scope: ['profile', 'email'], session: false })(req, res, next);
   }
 );
 

@@ -8,11 +8,17 @@ const path   = require('path');
 const fs     = require('fs');
 require('dotenv').config();
 
-// Ensure DB directory exists
-const dbDir = path.join(__dirname);
+const defaultDbPath = path.join(__dirname, 'tthcm.json');
+const dbPath = process.env.DB_PATH
+  ? (path.isAbsolute(process.env.DB_PATH)
+      ? process.env.DB_PATH
+      : path.join(process.cwd(), process.env.DB_PATH))
+  : defaultDbPath;
+
+const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 
-const adapter = new FileSync(path.join(__dirname, 'tthcm.json'));
+const adapter = new FileSync(dbPath);
 const db = low(adapter);
 
 // ─── Default structure ───────────────────────────
@@ -45,8 +51,10 @@ function seedDemo() {
   }
 }
 
-seedDemo();
-console.log('✅ LowDB initialized:', path.join(__dirname, 'tthcm.json'));
+if (process.env.NODE_ENV !== 'production' || process.env.SEED_DEMO_USER === 'true') {
+  seedDemo();
+}
+console.log('✅ LowDB initialized:', dbPath);
 
 // ─── Helper ID generator ─────────────────────────
 function nextId(collection) {

@@ -13,6 +13,33 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const { setupPassport } = require('./server/middleware/passport');
 
+function parseOrigins(value) {
+  return (value || '')
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
+}
+
+function validateProductionEnv() {
+  if (process.env.NODE_ENV !== 'production') return;
+
+  const required = ['APP_URL', 'JWT_SECRET'];
+  const missing = required.filter(key => !process.env[key]);
+  if (missing.length) {
+    throw new Error(`Missing required production env vars: ${missing.join(', ')}`);
+  }
+
+  if (process.env.JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET must be at least 32 characters in production.');
+  }
+}
+
+validateProductionEnv();
+
+if (process.env.TRUST_PROXY !== 'false') {
+  app.set('trust proxy', 1);
+}
+
 // ─── Security Middleware ───────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
@@ -31,7 +58,7 @@ app.use(helmet({
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? process.env.APP_URL
+    ? parseOrigins(process.env.ALLOWED_ORIGINS || process.env.APP_URL)
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 }));
@@ -64,6 +91,11 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
   etag: true,
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('index.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  },
 }));
 
 // ─── Passport / Google OAuth ───────────────────────
@@ -108,11 +140,20 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Start Server ──────────────────────────────────
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`\n🚀 TTHCM AI Platform đang chạy!`);
   console.log(`   └── http://localhost:${PORT}`);
   console.log(`   └── Môi trường: ${process.env.NODE_ENV || 'development'}`);
   console.log(`   └── Demo: demo@tthcm.edu.vn / Demo123!\n`);
 });
+
+function shutdown(signal) {
+  console.log(`${signal} received. Shutting down gracefully...`);
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(1), 10000).unref();
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
 module.exports = app;
