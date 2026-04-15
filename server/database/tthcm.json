@@ -1,0 +1,388 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Sinh viên Demo",
+      "email": "demo@tthcm.edu.vn",
+      "password_hash": "$2a$10$IR8V259NePn00RzkSMpdkuKFN3FQCV9DVy4g6fkXf3nO5TLvO46o.",
+      "role": "student",
+      "avatar": "SD",
+      "bio": null,
+      "is_active": true,
+      "created_at": "2026-04-15T03:42:09.762Z",
+      "last_login": "2026-04-15T07:12:19.066Z"
+    },
+    {
+      "id": 2,
+      "name": "Nguyen Van A",
+      "email": "sinhvien@test.com",
+      "password_hash": "$2a$12$dZNB9nwH8bnWYXPqwIvSceLCWeGNv1jKYsxKVCzV1tSwKT4Evu54C",
+      "role": "student",
+      "avatar": "NV",
+      "bio": null,
+      "is_active": true,
+      "created_at": "2026-04-15T04:00:02.024Z",
+      "last_login": "2026-04-15T04:00:02.024Z"
+    },
+    {
+      "id": 3,
+      "name": "Tran Thi B",
+      "email": "tranb@student.edu.vn",
+      "password_hash": "$2a$12$Fw40iVMysKqRATfoyxc8Q.y06SR/EHXUn23YYenUY1UpmTGq5dhHG",
+      "role": "student",
+      "avatar": "TT",
+      "bio": null,
+      "is_active": true,
+      "created_at": "2026-04-15T04:07:39.788Z",
+      "last_login": "2026-04-15T04:07:39.788Z"
+    },
+    {
+      "id": 4,
+      "name": "adt",
+      "email": "dev5.adtgroup@gmail.com",
+      "password_hash": "$2a$12$0LdkAu5p6nctNqqBwaetpu9fbrpFRhYdblKXKPErHrEfzCrNSra0a",
+      "role": "student",
+      "avatar": "DA",
+      "bio": null,
+      "is_active": true,
+      "created_at": "2026-04-15T04:11:25.515Z",
+      "last_login": "2026-04-15T06:56:28.418Z",
+      "google_id": "108190661028331255721"
+    },
+    {
+      "id": 5,
+      "name": "Quang Lê Hồng",
+      "email": "dev.adtgroup@gmail.com",
+      "password_hash": "$2a$12$PFPvugjo6JoueWPNsYdRBOBKW/Gs2xFUBrbwDGxXDDw6nFjkyVw8G",
+      "role": "student",
+      "avatar": "QL",
+      "bio": null,
+      "is_active": true,
+      "created_at": "2026-04-15T05:30:00.498Z",
+      "last_login": "2026-04-15T05:30:00.498Z"
+    }
+  ],
+  "chat_sessions": [
+    {
+      "id": "sess_1776225602124_wdqq3",
+      "user_id": 1,
+      "title": "Ngu?n g?c Tu tu?ng HCM l� g�?",
+      "mode": "qa",
+      "created_at": "2026-04-15T04:00:02.124Z",
+      "updated_at": "2026-04-15T04:00:02.132Z"
+    },
+    {
+      "id": "sess_1776226059873_bok0u",
+      "user_id": 1,
+      "title": "Nguon goc tu tuong HCM la gi?",
+      "mode": "qa",
+      "created_at": "2026-04-15T04:07:39.873Z",
+      "updated_at": "2026-04-15T04:07:39.879Z"
+    },
+    {
+      "id": "sess_1776226296114_qf4ef",
+      "user_id": 4,
+      "title": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?",
+      "mode": "qa",
+      "created_at": "2026-04-15T04:11:36.114Z",
+      "updated_at": "2026-04-15T04:11:45.391Z"
+    },
+    {
+      "id": "sess_1776236200612_hnppu",
+      "user_id": 4,
+      "title": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?",
+      "mode": "qa",
+      "dify_conversation_id": "acdd1558-4241-4949-8fcb-b2954d7a82a2",
+      "created_at": "2026-04-15T06:56:40.612Z",
+      "updated_at": "2026-04-15T06:58:33.740Z"
+    }
+  ],
+  "chat_messages": [
+    {
+      "id": 1,
+      "session_id": "sess_1776225602124_wdqq3",
+      "role": "user",
+      "content": "Ngu?n g?c Tu tu?ng HCM l� g�?",
+      "created_at": "2026-04-15T04:00:02.132Z"
+    },
+    {
+      "id": 2,
+      "session_id": "sess_1776225602124_wdqq3",
+      "role": "assistant",
+      "content": "Câu hỏi thú vị! Dựa vào nội dung môn Tư tưởng Hồ Chí Minh, tôi sẽ giải thích cho bạn...\n\nVui lòng thử hỏi cụ thể hơn, ví dụ:\n- \"Nguồn gốc của Tư tưởng HCM là gì?\"\n- \"5 đức tính cơ bản trong đạo đức HCM?\"\n- \"Đảng Cộng sản VN ra đời năm nào?\"",
+      "created_at": "2026-04-15T04:00:02.134Z"
+    },
+    {
+      "id": 3,
+      "session_id": "sess_1776226059873_bok0u",
+      "role": "user",
+      "content": "Nguon goc tu tuong HCM la gi?",
+      "created_at": "2026-04-15T04:07:39.879Z"
+    },
+    {
+      "id": 4,
+      "session_id": "sess_1776226059873_bok0u",
+      "role": "assistant",
+      "content": "## Nguồn gốc Tư tưởng Hồ Chí Minh\n\nTư tưởng HCM có **3 nguồn gốc lý luận** chính:\n\n### 1. 🇻🇳 Truyền thống dân tộc Việt Nam\n- Chủ nghĩa yêu nước và ý chí bất khuất\n- Truyền thống nhân nghĩa, đoàn kết cộng đồng\n\n### 2. 🌏 Tinh hoa văn hoá nhân loại\n- **Phương Đông**: Nho giáo, Phật giáo, Lão giáo\n- **Phương Tây**: Tư tưởng khai sáng Pháp, Tuyên ngôn Độc lập Mỹ 1776\n\n### 3. ⭐ Chủ nghĩa Mác–Lênin *(Nguồn gốc chủ yếu, quyết định nhất)*\n- Cung cấp thế giới quan và phương pháp luận khoa học\n- HCM đọc Luận cương Lênin năm 1920 → tìm ra con đường cứu nước\n\n> 💡 **Ghi nhớ thi**: Mác-Lênin là nguồn gốc **chủ yếu** và **quyết định bản chất cách mạng, khoa học** của TTHCM.",
+      "created_at": "2026-04-15T04:07:39.880Z"
+    },
+    {
+      "id": 5,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?",
+      "created_at": "2026-04-15T04:11:36.124Z"
+    },
+    {
+      "id": 6,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Nguồn gốc Tư tưởng Hồ Chí Minh\n\nTư tưởng HCM có **3 nguồn gốc lý luận** chính:\n\n### 1. 🇻🇳 Truyền thống dân tộc Việt Nam\n- Chủ nghĩa yêu nước và ý chí bất khuất\n- Truyền thống nhân nghĩa, đoàn kết cộng đồng\n\n### 2. 🌏 Tinh hoa văn hoá nhân loại\n- **Phương Đông**: Nho giáo, Phật giáo, Lão giáo\n- **Phương Tây**: Tư tưởng khai sáng Pháp, Tuyên ngôn Độc lập Mỹ 1776\n\n### 3. ⭐ Chủ nghĩa Mác–Lênin *(Nguồn gốc chủ yếu, quyết định nhất)*\n- Cung cấp thế giới quan và phương pháp luận khoa học\n- HCM đọc Luận cương Lênin năm 1920 → tìm ra con đường cứu nước\n\n> 💡 **Ghi nhớ thi**: Mác-Lênin là nguồn gốc **chủ yếu** và **quyết định bản chất cách mạng, khoa học** của TTHCM.",
+      "created_at": "2026-04-15T04:11:36.125Z"
+    },
+    {
+      "id": 7,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Ý nghĩa câu nói Không có gì quý hơn độc lập tự do?",
+      "created_at": "2026-04-15T04:11:37.768Z"
+    },
+    {
+      "id": 8,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng về Độc lập Dân tộc\n\n### 🏴 Luận điểm cốt lõi\n**\"Không có gì quý hơn độc lập, tự do\"** – HCM, 1965\n\n### Nội dung chính:\n\n**1. Độc lập hoàn toàn, thực sự**\n- Không phải độc lập hình thức\n- Toàn diện: chính trị, kinh tế, quân sự, ngoại giao, văn hoá\n\n**2. Gắn liền tự do, hạnh phúc nhân dân**\n- \"Nước độc lập mà dân không được hưởng hạnh phúc tự do thì độc lập cũng chẳng có nghĩa lý gì\"\n\n**3. Gắn liền với CNXH**\n- Độc lập → điều kiện để thực hiện CNXH\n- CNXH → đảm bảo độc lập bền vững\n\n> 📝 **Tips thi**: Câu nói nổi tiếng nói trong **kháng chiến chống Mỹ (1965)**, không phải 1945.",
+      "created_at": "2026-04-15T04:11:37.770Z"
+    },
+    {
+      "id": 9,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Bản chất của CNXH theo Hồ Chí Minh là gì?",
+      "created_at": "2026-04-15T04:11:39.023Z"
+    },
+    {
+      "id": 10,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng về Chủ nghĩa Xã hội\n\n### 🌟 Bản chất CNXH theo HCM\nKhông trừu tượng — diễn đạt gần gũi:\n- \"Làm cho nhân dân lao động **thoát nạn bần cùng**\"\n- \"Mọi người có **công ăn việc làm**, ăn no mặc ấm, học hành\"\n- Xã hội **bình đẳng**, không áp bức bóc lột\n\n### 📋 Con đường quá độ\n**Quá độ gián tiếp**: từ thuộc địa nửa phong kiến → CNXH (bỏ qua TBCN)\n- Lâu dài, gian khổ, nhiều bước\n- Học hỏi kinh nghiệm, sáng tạo\n\n### 🔑 Điều kiện xây dựng CNXH\n1. Đảng Cộng sản lãnh đạo\n2. Nhà nước của nhân dân, do dân, vì dân\n3. Xây dựng con người mới XHCN\n4. Phát triển lực lượng sản xuất",
+      "created_at": "2026-04-15T04:11:39.024Z"
+    },
+    {
+      "id": 11,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "5 đức tính cơ bản trong đạo đức Hồ Chí Minh?",
+      "created_at": "2026-04-15T04:11:39.815Z"
+    },
+    {
+      "id": 12,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng Đạo đức Hồ Chí Minh\n\n### ⭐ 5 Đức tính cơ bản\n\n| Đức tính | Nội dung |\n|----------|----------|\n| **Trung với nước, hiếu với dân** | Đức tính hàng đầu, quan trọng nhất |\n| **Cần, kiệm, liêm, chính, chí công vô tư** | Chuẩn mực người cách mạng |\n| **Thương yêu con người** | Sống có tình nghĩa, nhân ái |\n| **Tinh thần quốc tế trong sáng** | Đoàn kết chân thành |\n\n### 📌 Nguyên tắc rèn luyện đạo đức\n1. **Nói đi đôi với làm** – nêu gương đạo đức\n2. **Xây đi đôi với chống**\n3. **Tu dưỡng suốt đời** – không phải \"trên trời rơi xuống\"\n\n> 💬 *\"Có tài mà không có đức là người vô dụng. Có đức mà không có tài thì làm việc gì cũng khó.\"* – HCM",
+      "created_at": "2026-04-15T04:11:39.817Z"
+    },
+    {
+      "id": 13,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Đảng Cộng sản Việt Nam được thành lập như thế nào?",
+      "created_at": "2026-04-15T04:11:41.023Z"
+    },
+    {
+      "id": 14,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng về Đảng Cộng sản Việt Nam\n\n### 📅 Sự ra đời\n- **Ngày**: 3/2/1930\n- **Nơi**: Hương Cảng (Hồng Kông)\n- **Người sáng lập**: Nguyễn Ái Quốc (HCM)\n\n### ⚙️ 5 Nguyên tắc xây dựng Đảng\n1. **Tập trung dân chủ** *(nguyên tắc cơ bản nhất)*\n2. Tự phê bình và phê bình\n3. Kỷ luật nghiêm minh, tự giác\n4. Đoàn kết thống nhất trong Đảng\n5. Gắn bó mật thiết với nhân dân\n\n### 🌟 Đảng cầm quyền\n- Lãnh đạo toàn diện nhưng không bao biện, làm thay\n- Cán bộ đảng viên phải là **công bộc, đầy tớ** của nhân dân\n- Chống: quan liêu, tham nhũng, xa dân",
+      "created_at": "2026-04-15T04:11:41.024Z"
+    },
+    {
+      "id": 15,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Vai trò của đại đoàn kết dân tộc theo HCM?",
+      "created_at": "2026-04-15T04:11:41.552Z"
+    },
+    {
+      "id": 16,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng Đại đoàn kết Dân tộc\n\n> *\"Đoàn kết, đoàn kết, đại đoàn kết – Thành công, thành công, đại thành công\"*\n\n### 💪 Vai trò\n- Là **chiến lược cơ bản, lâu dài, nhất quán** của cách mạng\n- Là **nguồn sức mạnh**, nhân tố **quyết định thắng lợi**\n\n### 🏗️ Nền tảng\n**Liên minh công – nông – trí thức:**\n- Công nhân: giai cấp lãnh đạo\n- Nông dân: lực lượng chủ yếu\n- Trí thức: nền tảng quan trọng\n\n**Hình thức tổ chức**: Mặt trận Dân tộc Thống nhất\n\n### 🌍 Đoàn kết quốc tế\n- Với phong trào cộng sản và công nhân quốc tế\n- Với các dân tộc bị áp bức\n- Với lực lượng hoà bình, dân chủ tiến bộ",
+      "created_at": "2026-04-15T04:11:41.554Z"
+    },
+    {
+      "id": 17,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Phong cách Hồ Chí Minh gồm những phong cách nào?",
+      "created_at": "2026-04-15T04:11:42.126Z"
+    },
+    {
+      "id": 18,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Phong cách Hồ Chí Minh\n\n### 🎯 5 Phong cách nổi bật\n\n**1. Phong cách tư duy**\n- Độc lập, tự chủ, sáng tạo; luôn gắn lý luận với thực tiễn\n\n**2. Phong cách diễn đạt**\n- Ngắn gọn, súc tích, dễ hiểu; phù hợp từng đối tượng\n\n**3. Phong cách làm việc**\n- Khoa học, có kế hoạch; dân chủ, lắng nghe\n\n**4. Phong cách ứng xử**\n- Khiêm tốn, chân tình; gần gũi nhân dân\n\n**5. Phong cách sinh hoạt**\n- Giản dị, tiết kiệm, thanh bạch\n- Chiếc áo vải, đôi dép cao su — biểu tượng của sự giản dị",
+      "created_at": "2026-04-15T04:11:42.128Z"
+    },
+    {
+      "id": 19,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Nhà nước của dân do dân vì dân có nghĩa là gì?",
+      "created_at": "2026-04-15T04:11:42.712Z"
+    },
+    {
+      "id": 20,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Tư tưởng về Nhà nước và Dân chủ\n\n### 🏛️ Bản chất Nhà nước\n**\"Nhà nước của nhân dân, do nhân dân, vì nhân dân\"**\n- Tất cả quyền lực thuộc về nhân dân\n- Nhà nước do nhân dân làm chủ\n- Mọi hoạt động vì lợi ích nhân dân\n\n### 🗳️ Dân chủ theo HCM\n*\"Dân là chủ và dân làm chủ\"*\n- Nhân dân là chủ thể quyền lực tối cao\n- Dân chủ là mục tiêu VÀ động lực phát triển\n- Phải thực chất, không hình thức\n\n### ⚖️ Nhà nước pháp quyền\n- Thượng tôn pháp luật\n- Cán bộ nhà nước là **công bộc của dân**\n- Chống quan liêu, tham nhũng, lãng phí",
+      "created_at": "2026-04-15T04:11:42.713Z"
+    },
+    {
+      "id": 21,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "user",
+      "content": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?",
+      "created_at": "2026-04-15T04:11:45.391Z"
+    },
+    {
+      "id": 22,
+      "session_id": "sess_1776226296114_qf4ef",
+      "role": "assistant",
+      "content": "## Nguồn gốc Tư tưởng Hồ Chí Minh\n\nTư tưởng HCM có **3 nguồn gốc lý luận** chính:\n\n### 1. 🇻🇳 Truyền thống dân tộc Việt Nam\n- Chủ nghĩa yêu nước và ý chí bất khuất\n- Truyền thống nhân nghĩa, đoàn kết cộng đồng\n\n### 2. 🌏 Tinh hoa văn hoá nhân loại\n- **Phương Đông**: Nho giáo, Phật giáo, Lão giáo\n- **Phương Tây**: Tư tưởng khai sáng Pháp, Tuyên ngôn Độc lập Mỹ 1776\n\n### 3. ⭐ Chủ nghĩa Mác–Lênin *(Nguồn gốc chủ yếu, quyết định nhất)*\n- Cung cấp thế giới quan và phương pháp luận khoa học\n- HCM đọc Luận cương Lênin năm 1920 → tìm ra con đường cứu nước\n\n> 💡 **Ghi nhớ thi**: Mác-Lênin là nguồn gốc **chủ yếu** và **quyết định bản chất cách mạng, khoa học** của TTHCM.",
+      "created_at": "2026-04-15T04:11:45.392Z"
+    },
+    {
+      "id": 23,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "user",
+      "content": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?",
+      "created_at": "2026-04-15T06:56:40.625Z"
+    },
+    {
+      "id": 24,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "assistant",
+      "content": "Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh bao gồm:\n\n- Chủ nghĩa Mác – Lênin\n- Giá trị văn hóa dân tộc\n- Tinh hoa văn hóa nhân loại",
+      "created_at": "2026-04-15T06:56:46.193Z"
+    },
+    {
+      "id": 25,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "user",
+      "content": "Ý nghĩa câu nói Không có gì quý hơn độc lập tự do?",
+      "created_at": "2026-04-15T06:58:10.435Z"
+    },
+    {
+      "id": 26,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "assistant",
+      "content": "Câu nói \"Không có gì quý hơn độc lập tự do\" của Hồ Chí Minh thể hiện quan điểm và tư tưởng sâu sắc về tầm quan trọng của độc lập và tự do:\n\n- **Mở đầu**: Câu nói này nhấn mạnh giá trị tối cao của độc lập và tự do đối với dân tộc Việt Nam.\n\n- **Nội dung chính**:\n  - **Độc lập**: Là quyền tự quyết, tự chủ của dân tộc, không bị lệ thuộc, áp bức bởi bất kỳ nước nào khác.\n  - **Tự do**: Là quyền tự do cá nhân và tập thể, được sống, làm việc và phát triển theo ý muốn của mình.\n  - **Ý nghĩa**: Độc lập và tự do là điều kiện tiên quyết để dân tộc phát triển, người dân được hưởng cuộc sống hạnh phúc và no ấm.\n  - **Tinh thần đấu tranh**: Câu nói này cũng thể hiện tinh thần đấu tranh không ngừng nghỉ của dân tộc Việt Nam vì độc lập, tự do.\n\n- **Kết luận**: Câu nói \"Không có gì quý hơn độc lập tự do\" là kim chỉ nam cho hành động của dân tộc Việt Nam, khẳng định quyết tâm bảo vệ và xây dựng đất nước độc lập, tự do, hạnh phúc.",
+      "created_at": "2026-04-15T06:58:20.365Z"
+    },
+    {
+      "id": 27,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "user",
+      "content": "Bản chất của CNXH theo Hồ Chí Minh là gì?",
+      "created_at": "2026-04-15T06:58:33.740Z"
+    },
+    {
+      "id": 28,
+      "session_id": "sess_1776236200612_hnppu",
+      "role": "assistant",
+      "content": "Bản chất của Chủ nghĩa Xã hội (CNXH) theo Hồ Chí Minh được thể hiện qua các điểm chính sau:\n\n- **Dân giàu, nước mạnh, xã hội công bằng, dân chủ, văn minh**:\n  - **Dân giàu**: Mọi người dân đều có cuộc sống no ấm, hạnh phúc.\n  - **Nước mạnh**: Đất nước phát triển, có sức mạnh về kinh tế, văn hóa, quốc phòng.\n  - **Xã hội công bằng**: Mọi người đều có cơ hội bình đẳng, không có sự phân biệt đối xử.\n  - **Dân chủ**: Người dân có quyền tham gia vào việc quản lý nhà nước và xã hội.\n  - **Văn minh**: Xã hội có nền văn hóa tiên tiến, đạo đức tốt đẹp.\n\n- **Phát triển kinh tế đa dạng**:\n  - Khuyến khích sự phát triển của nhiều hình thức sở hữu, bao gồm cả kinh tế nhà nước, kinh tế tập thể, kinh tế tư nhân.\n  - Tạo môi trường thuận lợi cho sự phát triển của mọi thành phần kinh tế.\n\n- **Chăm sóc và bảo vệ quyền lợi của người lao động**:\n  - Đảm bảo quyền lợi của người lao động, cải thiện đời sống vật chất và tinh thần.\n  - Tạo điều kiện để người lao động được học tập, nâng cao trình độ.\n\n- **Xây dựng nền văn hóa tiên tiến, đậm đà bản sắc dân tộc**:\n  - Phát huy những giá trị văn hóa truyền thống của dân tộc.\n  - Kết hợp với tinh hoa văn hóa thế giới để xây dựng nền văn hóa hiện đại, tiến bộ.\n\n- **Xây dựng nhà nước pháp quyền xã hội chủ nghĩa**:\n  - Nhà nước hoạt động theo pháp luật, đảm bảo quyền và lợi ích của người dân.\n  - Xây dựng hệ thống chính trị trong sạch, vững mạnh.\n\nTóm lại, bản chất của CNXH theo Hồ Chí Minh là xây dựng một xã hội mà mọi người dân đều được hưởng cuộc sống no ấm, hạnh phúc, có quyền bình đẳng và tự do, đồng thời phát triển kinh tế, văn hóa và chính trị một cách toàn diện.",
+      "created_at": "2026-04-15T06:58:51.002Z"
+    }
+  ],
+  "quiz_attempts": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "mode": "practice",
+      "chapter_id": 0,
+      "score": 80,
+      "correct": 8,
+      "wrong": 2,
+      "skipped": 0,
+      "total": 10,
+      "time_spent": 0,
+      "created_at": "2026-04-15T04:07:39.888Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "mode": "practice",
+      "chapter_id": 0,
+      "score": 0,
+      "correct": 0,
+      "wrong": 0,
+      "skipped": 10,
+      "total": 10,
+      "time_spent": 0,
+      "created_at": "2026-04-15T04:14:51.444Z"
+    }
+  ],
+  "flashcard_progress": [
+    {
+      "user_id": 1,
+      "card_id": 1,
+      "status": "known",
+      "updated_at": "2026-04-15T06:37:44.939Z"
+    },
+    {
+      "user_id": 4,
+      "card_id": 5,
+      "status": "unknown",
+      "updated_at": "2026-04-15T04:12:10.843Z"
+    },
+    {
+      "user_id": 4,
+      "card_id": 6,
+      "status": "known",
+      "updated_at": "2026-04-15T04:12:11.488Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 9,
+      "status": "known",
+      "updated_at": "2026-04-15T04:14:24.659Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 10,
+      "status": "known",
+      "updated_at": "2026-04-15T04:14:24.662Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 11,
+      "status": "unknown",
+      "updated_at": "2026-04-15T04:14:25.521Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 12,
+      "status": "unknown",
+      "updated_at": "2026-04-15T04:14:25.523Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 13,
+      "status": "known",
+      "updated_at": "2026-04-15T04:14:27.330Z"
+    },
+    {
+      "user_id": 1,
+      "card_id": 14,
+      "status": "known",
+      "updated_at": "2026-04-15T04:14:27.333Z"
+    },
+    {
+      "user_id": 4,
+      "card_id": 1,
+      "status": "known",
+      "updated_at": "2026-04-15T06:56:58.069Z"
+    }
+  ]
+}
