@@ -76,7 +76,7 @@ const CHAPTER_CONTENT = {
     keyPoints: [
       { icon: "⚖️", title: "Dân chủ thực sự", content: "Dân là chủ & Dân làm chủ trong mọi hoạt động xã hội." },
       { icon: "🏛️", title: "Nhà nước Pháp quyền", content: "Quản lý bằng pháp luật; cán bộ là công bộc của dân." },
-      { icon: "🚫", title: "Chống tiêu cực", options: "Tiêu diệt tham ô, lãng phí, quan liêu." }
+      { icon: "🚫", title: "Chống tiêu cực", content: "Tiêu diệt tham ô, lãng phí, quan liêu." }
     ],
     quotes: [{ text: "Địa vị cao nhất là dân, vì dân là chủ.", author: "Hồ Chí Minh" }]
   },

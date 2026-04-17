@@ -254,6 +254,7 @@ function buildChaptersPage() {
         </div>
       </div>`;
   }).join('');
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
 
