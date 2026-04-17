@@ -9,10 +9,11 @@ const FlashcardEngine = (() => {
   let dontKnow = new Set();
   let isFlipped = false;
   let shuffled = false;
-  let activeChapter = 0; // 0 = all
+  let activeChapter = -1; // -1 = all
   let initialized = false;
 
   function init() {
+    activeChapter = -1; // Reset to All
     cards = [...window.AppData.FLASHCARDS];
     renderChapterFilter();
     renderCard();
@@ -21,23 +22,30 @@ const FlashcardEngine = (() => {
       setupControls();
       initialized = true;
     }
+    updateFilterUI(); // Ensure correct button is active
+  }
+
+  function updateFilterUI() {
+    document.querySelectorAll('#fcChapterFilter .chapter-filter-btn').forEach(b => {
+      const val = parseInt(b.dataset.ch);
+      b.classList.toggle('active', val === activeChapter);
+    });
   }
 
   function renderChapterFilter() {
     const filter = document.getElementById('fcChapterFilter');
     if (!filter) return;
     const chapters = window.AppData.CHAPTERS;
-    filter.innerHTML = `<button class="chapter-filter-btn active" data-ch="0" onclick="FlashcardEngine.filterChapter(0)">Tất cả</button>` +
+    filter.innerHTML = `<button class="chapter-filter-btn" data-ch="-1" onclick="FlashcardEngine.filterChapter(-1)">Tất cả</button>` +
       chapters.map(c => `<button class="chapter-filter-btn" data-ch="${c.id}" onclick="FlashcardEngine.filterChapter(${c.id})">${c.title}</button>`).join('');
+    updateFilterUI();
   }
 
   function filterChapter(chapterId) {
-    activeChapter = chapterId;
-    document.querySelectorAll('#fcChapterFilter .chapter-filter-btn').forEach(b => {
-      b.classList.toggle('active', parseInt(b.dataset.ch) === chapterId);
-    });
-    if (chapterId === 0) { cards = [...window.AppData.FLASHCARDS]; }
-    else { cards = window.AppData.FLASHCARDS.filter(c => c.chapter === chapterId); }
+    activeChapter = parseInt(chapterId);
+    updateFilterUI();
+    if (activeChapter === -1) { cards = [...window.AppData.FLASHCARDS]; }
+    else { cards = window.AppData.FLASHCARDS.filter(c => c.chapter === activeChapter); }
     if (shuffled) shuffleCards();
     currentIndex = 0;
     isFlipped = false;
@@ -150,7 +158,7 @@ const FlashcardEngine = (() => {
     const btn = document.getElementById('fcShuffleBtn');
     if (btn) { btn.style.background = shuffled ? 'rgba(196,30,58,0.15)' : ''; btn.style.borderColor = shuffled ? 'var(--red-500)' : ''; }
     if (shuffled) shuffleCards();
-    else { cards = activeChapter === 0 ? [...window.AppData.FLASHCARDS] : window.AppData.FLASHCARDS.filter(c => c.chapter === activeChapter); }
+    else { cards = activeChapter === -1 ? [...window.AppData.FLASHCARDS] : window.AppData.FLASHCARDS.filter(c => c.chapter === activeChapter); }
     currentIndex = 0;
     renderCard();
   }
@@ -198,7 +206,7 @@ const QuizEngine = (() => {
   let timeLeft = 0;
   let quizMode = 'practice';
   let quizStarted = false;
-  let activeChapter = 0;
+  let activeChapter = -1;
   const TIME_PER_Q = 45;
 
   function init() {
@@ -216,15 +224,21 @@ const QuizEngine = (() => {
     const filter = document.getElementById('quizChapterFilter');
     if (!filter) return;
     const chapters = window.AppData.CHAPTERS;
-    filter.innerHTML = `<button class="chapter-filter-btn active" data-ch="0" onclick="QuizEngine.filterChapter(0)">Tất cả</button>` +
+    filter.innerHTML = `<button class="chapter-filter-btn" data-ch="-1" onclick="QuizEngine.filterChapter(-1)">Tất cả</button>` +
       chapters.map(c => `<button class="chapter-filter-btn" data-ch="${c.id}" onclick="QuizEngine.filterChapter(${c.id})">${c.title}</button>`).join('');
+    updateFilterUI();
+  }
+
+  function updateFilterUI() {
+    document.querySelectorAll('#quizChapterFilter .chapter-filter-btn').forEach(b => {
+      const val = parseInt(b.dataset.ch);
+      b.classList.toggle('active', val === activeChapter);
+    });
   }
 
   function filterChapter(chId) {
-    activeChapter = chId;
-    document.querySelectorAll('#quizChapterFilter .chapter-filter-btn').forEach(b => {
-      b.classList.toggle('active', parseInt(b.dataset.ch) === chId);
-    });
+    activeChapter = parseInt(chId);
+    updateFilterUI();
   }
 
   function setupModeCards() {
@@ -245,7 +259,7 @@ const QuizEngine = (() => {
 
   function startQuiz() {
     const all = window.AppData.QUIZ_QUESTIONS;
-    const pool = activeChapter === 0 ? all : all.filter(q => q.chapter === activeChapter);
+    const pool = activeChapter === -1 ? all : all.filter(q => q.chapter === activeChapter);
     questions = shuffle([...pool]).slice(0, quizMode === 'exam' ? 15 : quizMode === 'practice' ? 10 : pool.length);
     if (questions.length === 0) { showToast('⚠️', 'Không có câu hỏi cho bộ lọc này.', 'error'); return; }
 
@@ -463,81 +477,62 @@ const QuizEngine = (() => {
 
 const MindmapEngine = (() => {
   let canvas, ctx;
+  let miniCanvas, miniCtx;
   let offsetX = 0, offsetY = 0;
   let scale = 1;
   let dragging = false;
   let lastMouse = { x: 0, y: 0 };
   let nodes = [];
   let hoveredNode = null;
-  let activeTopicId = 0;
+  let tooltip = { el: null, visible: false, x: 0, y: 0 };
   let initialized = false;
+  let searchResults = [];
 
-  const MINDMAP_DATA = {
-    0: {
-      label: "Tư tưởng Hồ Chí Minh",
-      color: "#c41e3a",
-      children: [
-        { label: "Nguồn gốc", color: "#8b0000", desc: "Dân tộc, nhân loại, Mác-Lênin", children: [
-          { label: "Chủ nghĩa Mác-Lênin", color: "#7b0b0b", desc: "Nguồn gốc chủ yếu nhất" },
-          { label: "Truyền thống DT", color: "#7b0b0b", desc: "Yêu nước, nhân nghĩa" },
-          { label: "Tinh hoa nhân loại", color: "#7b0b0b", desc: "Đông & Tây phương" },
-        ]},
-        { label: "Độc lập DT & CNXH", color: "#d4a017", desc: "Hai mục tiêu gắn bó hữu cơ", children: [
-          { label: "Độc lập hoàn toàn", color: "#b7791f", desc: "Chính trị, KT, VH, QS" },
-          { label: "Gắn với tự do, HP", color: "#b7791f", desc: "Dân được hưởng thành quả" },
-          { label: "CNXH – con đường", color: "#b7791f", desc: "Quá độ gián tiếp" },
-        ]},
-        { label: "Đảng Cộng sản VN", color: "#1565c0", desc: "Thành lập 3/2/1930", children: [
-          { label: "Nền tảng Mác-Lênin", color: "#0d47a1", desc: "Kim chỉ nam hành động" },
-          { label: "Tập trung dân chủ", color: "#0d47a1", desc: "Nguyên tắc cơ bản nhất" },
-          { label: "Gắn bó nhân dân", color: "#0d47a1", desc: "Công bộc của dân" },
-        ]},
-        { label: "Đại đoàn kết DT", color: "#2e7d32", desc: "Chiến lược cơ bản, lâu dài", children: [
-          { label: "Liên minh C-N-TT", color: "#1b5e20", desc: "Nền tảng đoàn kết" },
-          { label: "Mặt trận DT TN", color: "#1b5e20", desc: "Hình thức tổ chức" },
-          { label: "ĐK quốc tế", color: "#1b5e20", desc: "Đoàn kết trong sáng" },
-        ]},
-        { label: "Nhà nước & DC", color: "#6a1b9a", desc: "Của dân, do dân, vì dân", children: [
-          { label: "Dân là chủ", color: "#4a148c", desc: "Quyền lực nhân dân" },
-          { label: "Pháp quyền XHCN", color: "#4a148c", desc: "Thượng tôn pháp luật" },
-        ]},
-        { label: "VH, Đạo đức, CN", color: "#00838f", desc: "Văn hoá soi đường", children: [
-          { label: "5 Đức tính", color: "#006064", desc: "Trung-Cần-Liêm-Thương-QT" },
-          { label: "Phong cách HCM", color: "#006064", desc: "Tư duy, Diễn đạt, Ứng xử" },
-          { label: "Nói đi đôi làm", color: "#006064", desc: "Nguyên tắc đạo đức" },
-        ]},
-      ]
-    }
+  // Configuration
+  const CONFIG = {
+    lerpSpeed: 0.12,
+    sectorSize: (Math.PI * 2) / 8, // 8 chapters
+    spread: 0.85, // 85% of sector
+    dist: [0, 320, 220, 160, 120] // distance by level
   };
 
   function init() {
     canvas = document.getElementById('mindmapCanvas');
+    miniCanvas = document.getElementById('mmMinimapCanvas');
     if (!canvas) return;
+    
     ctx = canvas.getContext('2d');
+    if (miniCanvas) miniCtx = miniCanvas.getContext('2d');
+
     resizeCanvas();
     renderTopicSelect();
-    buildNodes(getMindmapData(activeTopicId));
+    
+    const startData = window.AppData?.MINDMAP_DATA;
+    buildNodes(startData);
+    
     if (!initialized) {
       setupInteractions();
-      animate();
+      setupSearch();
+      requestAnimationFrame(animate);
       window.addEventListener('resize', () => { resizeCanvas(); });
       initialized = true;
-    } else {
-      draw();
     }
   }
 
   function getMindmapData(topicId) {
-    const source = window.AppData?.MINDMAP_DATA || MINDMAP_DATA;
-    if (source[topicId]) return source[topicId];
-    const root = source[0] || MINDMAP_DATA[0];
-    const chapter = window.AppData?.CHAPTERS?.find(ch => ch.id === topicId);
-    const child = root.children?.[topicId - 1];
-    if (!chapter || !child) return root;
+    const source = window.AppData?.MINDMAP_DATA;
+    if (topicId === 'all') return source;
+    
+    const chapterId = parseInt(topicId, 10);
+    const chapter = window.AppData?.CHAPTERS?.find(ch => ch.id === chapterId);
+    
+    // In our structure, children[chapterId] is the chapter node
+    const child = source.children?.find(c => c.id === `c${chapterId}`) || source.children?.[chapterId];
+    
+    if (!chapter || !child) return source;
     return {
-      label: chapter.title,
-      color: child.color || chapter.color || root.color,
-      desc: chapter.subtitle,
+      label: "Tư tưởng Hồ Chí Minh",
+      color: "#C41E3A",
       children: [child],
     };
   }
@@ -546,64 +541,157 @@ const MindmapEngine = (() => {
     const select = document.getElementById('mmTopicSelect');
     if (!select || select.dataset.ready) return;
     const chapters = window.AppData?.CHAPTERS || [];
-    select.innerHTML = `<option value="0">🗺️ Toàn bộ hệ thống TTHCM</option>` +
+    select.innerHTML = `<option value="all">🗺️ Toàn bộ hệ thống TTHCM</option>` +
       chapters.map(ch => `<option value="${ch.id}">${ch.icon} ${ch.title}</option>`).join('');
+    
     select.addEventListener('change', () => {
-      activeTopicId = parseInt(select.value, 10) || 0;
-      buildNodes(getMindmapData(activeTopicId));
-      scale = 1;
-      offsetX = canvas.width / 2;
-      offsetY = canvas.height / 2;
-      draw();
+      buildNodes(getMindmapData(select.value));
     });
     select.dataset.ready = 'true';
+  }
+
+  function setupSearch() {
+    const input = document.getElementById('mmSearchInput');
+    const resultsBox = document.getElementById('mmSearchResults');
+    if (!input || !resultsBox) return;
+
+    input.addEventListener('input', (e) => {
+      const term = e.target.value.trim().toLowerCase();
+      if (!term) { resultsBox.classList.remove('active'); return; }
+
+      searchResults = nodes.filter(n => n.label.toLowerCase().includes(term)).slice(0, 10);
+      if (searchResults.length > 0) {
+        resultsBox.innerHTML = searchResults.map(n => `<div class="mm-search-item" onclick="MindmapEngine.focusNode('${n.path.replace(/'/g, "\\'")}')">${n.label} <span style="font-size:0.7rem;opacity:0.6">• ${n.path.split(' > ').slice(1, -1).join(' > ')}</span></div>`).join('');
+        resultsBox.classList.add('active');
+      } else {
+        resultsBox.innerHTML = '<div class="mm-search-item" style="color:var(--text-muted)">Không tìm thấy kết quả</div>';
+        resultsBox.classList.add('active');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!input.contains(e.target) && !resultsBox.contains(e.target)) resultsBox.classList.remove('active');
+    });
+  }
+
+  function focusNode(path) {
+    const node = nodes.find(n => n.path === path);
+    if (!node) return;
+    
+    // Close search
+    document.getElementById('mmSearchResults')?.classList.remove('active');
+    document.getElementById('mmSearchInput').value = '';
+
+    // Zoom and Pan
+    scale = 1.2;
+    offsetX = canvas.width / 2 - (node.x * scale);
+    offsetY = canvas.height / 2 - (node.y * scale);
+    
+    // Highlight effect
+    node.isHighlighted = true;
+    setTimeout(() => node.isHighlighted = false, 2000);
   }
 
   function resizeCanvas() {
     const wrap = canvas.parentElement;
     canvas.width = wrap.clientWidth;
     canvas.height = wrap.clientHeight;
-    if (nodes.length) {
-      offsetX = canvas.width / 2;
-      offsetY = canvas.height / 2;
-      draw();
+    if (miniCanvas) {
+      miniCanvas.width = 160;
+      miniCanvas.height = 120;
     }
-  }
-
-  function buildNodes(data) {
-    nodes = [];
-    const cx = 0, cy = 0;
-    const root = { x: cx, y: cy, label: data.label, color: data.color, desc: 'Hệ thống tư tưởng toàn diện', radius: 55, level: 0, id: 0 };
-    nodes.push(root);
-
-    const children = data.children || [];
-    const angleStep = (Math.PI * 2) / children.length;
-    const orbitR = 220;
-
-    children.forEach((child, i) => {
-      const angle = angleStep * i - Math.PI / 2;
-      const x = Math.cos(angle) * orbitR;
-      const y = Math.sin(angle) * orbitR;
-      const childNode = { x, y, label: child.label, color: child.color, desc: child.desc || '', radius: 38, level: 1, parentId: 0, id: i + 1 };
-      nodes.push(childNode);
-
-      const subChildren = child.children || [];
-      const subAngleStep = subChildren.length > 0 ? (Math.PI * 0.7) / Math.max(subChildren.length - 1, 1) : 0;
-      const subR = 130;
-      subChildren.forEach((sub, j) => {
-        const subAngle = angle - (subChildren.length - 1) * subAngleStep * 0.5 + j * subAngleStep;
-        const sx = x + Math.cos(subAngle) * subR;
-        const sy = y + Math.sin(subAngle) * subR;
-        nodes.push({ x: sx, y: sy, label: sub.label, color: sub.color, desc: sub.desc || '', radius: 26, level: 2, parentId: i + 1, id: nodes.length });
-      });
-    });
-
     offsetX = canvas.width / 2;
     offsetY = canvas.height / 2;
   }
 
+  function buildNodes(data) {
+    if (!data) return;
+    const oldNodes = [...nodes];
+    nodes = [];
+
+    if (!window._mmCollapsedState) window._mmCollapsedState = new Set();
+
+    function processNode(item, px, py, pAngle, level, parentId, inheritedColor, path) {
+      const nodePath = path === 'root' ? item.label : path + ' > ' + item.label;
+      const isCollapsed = window._mmCollapsedState.has(nodePath);
+      
+      // Calculate target position
+      let targetX, targetY, angle = 0;
+      if (level === 0) {
+        targetX = 0; targetY = 0;
+      } else {
+        const dist = CONFIG.dist[level] || 150;
+        targetX = px + Math.cos(pAngle) * dist;
+        targetY = py + Math.sin(pAngle) * dist;
+        angle = pAngle;
+      }
+
+      // Restore current positions for smooth LERP
+      const existing = oldNodes.find(n => n.path === nodePath);
+      const curX = existing ? existing.x : px;
+      const curY = existing ? existing.y : py;
+
+      const node = {
+        id: nodes.length,
+        parentId,
+        level,
+        label: item.label || '',
+        color: item.color || inheritedColor || '#ffffff',
+        desc: item.desc || '',
+        radius: level === 0 ? 50 : (level === 1 ? 36 : 24),
+        x: curX,
+        y: curY,
+        targetX,
+        targetY,
+        angle,
+        path: nodePath,
+        isCollapsed,
+        isLeaf: !item.children || item.children.length === 0,
+      };
+      nodes.push(node);
+
+      if (!isCollapsed && item.children && item.children.length > 0) {
+        const count = item.children.length;
+        const sectorSize = level === 0 ? (Math.PI * 2) / count : CONFIG.sectorSize * 0.7;
+        const startAngle = level === 0 ? -Math.PI / 2 : pAngle - sectorSize / 2;
+        const angleStep = count > 1 ? sectorSize / (count - 1) : 0;
+
+        item.children.forEach((child, i) => {
+          const currentAngle = level === 0 ? (startAngle + i * sectorSize) : (startAngle + i * angleStep);
+          // Chapters get their own colors from CHAPTERS data if not in item
+          let nodeColor = child.color || item.color || inheritedColor;
+          if (level === 0) {
+            const chRef = window.AppData.CHAPTERS.find(c => c.id === i);
+            if (chRef) nodeColor = chRef.color;
+          }
+          processNode(child, targetX, targetY, currentAngle, level + 1, node.id, nodeColor, nodePath);
+        });
+      }
+    }
+
+    processNode(data, 0, 0, 0, 0, undefined, data.color, 'root');
+  }
+
   function setupInteractions() {
-    canvas.addEventListener('mousedown', (e) => { dragging = true; lastMouse = getPos(e); canvas.style.cursor = 'grabbing'; });
+    canvas.addEventListener('mousedown', (e) => { 
+      const pos = getPos(e);
+      const worldX = (pos.x - offsetX) / scale;
+      const worldY = (pos.y - offsetY) / scale;
+      const target = nodes.find(n => Math.hypot(n.x - worldX, n.y - worldY) < n.radius / scale + 10);
+      
+      if (target) {
+        if (!target.isLeaf) {
+          if (window._mmCollapsedState.has(target.path)) window._mmCollapsedState.delete(target.path);
+          else window._mmCollapsedState.add(target.path);
+          buildNodes(getMindmapData(document.getElementById('mmTopicSelect').value));
+        } else {
+          showDetailPanel(target);
+        }
+      } else {
+        dragging = true; lastMouse = pos; canvas.style.cursor = 'grabbing'; 
+      }
+    });
+
     canvas.addEventListener('mousemove', (e) => {
       const pos = getPos(e);
       if (dragging) {
@@ -611,54 +699,145 @@ const MindmapEngine = (() => {
         offsetY += pos.y - lastMouse.y;
         lastMouse = pos;
       }
-      // Hover detection
-      const worldX = (pos.x - offsetX) / scale;
-      const worldY = (pos.y - offsetY) / scale;
-      const found = nodes.find(n => Math.hypot(n.x - worldX, n.y - worldY) < n.radius + 5);
+      const found = nodes.find(n => Math.hypot(n.x - worldX, n.y - worldY) < n.radius + 10); // Buffer for small nodes
+      
       if (found !== hoveredNode) {
         hoveredNode = found;
-        updateTooltip(found, pos);
+        if (found) {
+          updateTooltip(found, pos.x, pos.y);
+          // Auto-highlight in search results if applicable
+        } else {
+          hideTooltip();
+        }
+      } else if (found) {
+        updateTooltip(found, pos.x, pos.y);
       }
+
+      canvas.style.cursor = found ? 'pointer' : (dragging ? 'grabbing' : 'grab');
     });
-    canvas.addEventListener('mouseup', () => { dragging = false; canvas.style.cursor = 'grab'; });
-    canvas.addEventListener('mouseleave', () => { dragging = false; hoveredNode = null; updateTooltip(null); });
+
+    canvas.addEventListener('click', (e) => {
+        if (dragging) return;
+        const pos = getMousePos(canvas, e);
+        const worldX = (pos.x - offsetX) / scale;
+        const worldY = (pos.y - offsetY) / scale;
+        const found = nodes.find(n => Math.hypot(n.x - worldX, n.y - worldY) < n.radius + 10);
+        if (found) {
+            showDetailPanel(found);
+            focusNode(found.id);
+        }
+    });
+
+    canvas.addEventListener('mouseleave', hideTooltip);
+
+    canvas.addEventListener('mouseup', () => dragging = false);
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
       const factor = e.deltaY > 0 ? 0.9 : 1.1;
-      scale = Math.max(0.4, Math.min(2.5, scale * factor));
+      scale = Math.max(0.2, Math.min(3, scale * factor));
     }, { passive: false });
-
-    // Touch events for mobile
-    let lastTouchDist = null;
-    canvas.addEventListener('touchstart', (e) => { if (e.touches.length === 1) { dragging = true; lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY }; } }, { passive: true });
-    canvas.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1 && dragging) {
-        const pos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        offsetX += pos.x - lastMouse.x; offsetY += pos.y - lastMouse.y; lastMouse = pos;
-      } else if (e.touches.length === 2) {
-        e.preventDefault();
-        const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-        if (lastTouchDist) scale = Math.max(0.4, Math.min(2.5, scale * (d / lastTouchDist)));
-        lastTouchDist = d;
-      }
-    }, { passive: false });
-    canvas.addEventListener('touchend', () => { dragging = false; lastTouchDist = null; }, { passive: true });
-
-    // Zoom controls
-    document.getElementById('mmZoomIn')?.addEventListener('click', () => { scale = Math.min(2.5, scale * 1.2); });
-    document.getElementById('mmZoomOut')?.addEventListener('click', () => { scale = Math.max(0.4, scale * 0.8); });
-    document.getElementById('mmReset')?.addEventListener('click', () => { scale = 1; offsetX = canvas.width / 2; offsetY = canvas.height / 2; });
   }
 
-  function updateTooltip(node, pos) {
-    const tip = document.getElementById('mmTooltip');
-    if (!tip) return;
-    if (!node || !node.desc) { tip.classList.remove('visible'); return; }
-    tip.querySelector('.mm-tooltip-title').textContent = node.label;
-    tip.querySelector('.mm-tooltip-desc').textContent = node.desc;
-    tip.style.left = (pos?.x || 0) + 16 + 'px';
-    tip.style.top = (pos?.y || 0) + 'px';
-    tip.classList.add('visible');
+  function animate() {
+    // Lerp positions
+    nodes.forEach(n => {
+      n.x += (n.targetX - n.x) * CONFIG.lerpSpeed;
+      n.y += (n.targetY - n.y) * CONFIG.lerpSpeed;
+    });
+
+    draw();
+    drawMinimap();
+    requestAnimationFrame(animate);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+
+    // Draw connections (bezier)
+    nodes.forEach(node => {
+      if (node.parentId === undefined) return;
+      const p = nodes.find(n => n.id === node.parentId);
+      if (!p) return;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      const cp1x = p.x + (node.x - p.x) * 0.5;
+      const cp2x = p.x + (node.x - p.x) * 0.5;
+      ctx.bezierCurveTo(cp1x, p.y, cp2x, node.y, node.x, node.y);
+      ctx.strokeStyle = `rgba(${parseInt(node.color.slice(1,3),16)},${parseInt(node.color.slice(3,5),16)},${parseInt(node.color.slice(5,7),16)},0.3)`;
+      ctx.lineWidth = 2 / scale;
+      ctx.stroke();
+    });
+
+    // Draw nodes
+    nodes.forEach(node => {
+      const isHovered = hoveredNode === node;
+      const glowSize = isHovered ? 1.4 : 1.1;
+      
+      // Node circle
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      ctx.fillStyle = node.color;
+      ctx.shadowBlur = isHovered ? 25 : 15;
+      ctx.shadowColor = node.color;
+      ctx.fill();
+      
+      // Node Border
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Label (Inside for level 0,1. Outside for others)
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${node.level === 0 ? 'bold' : 'normal'} ${node.level === 0 ? 14 : 11}px sans-serif`;
+      
+      if (node.level <= 1) {
+        // Wrap text inside circle
+        const words = node.label.split(' ');
+        let line = '', y = node.y - 6;
+        if (words.length > 2) {
+          ctx.fillText(words.slice(0, 2).join(' '), node.x, y);
+          ctx.fillText(words.slice(2).join(' '), node.x, y + 14);
+        } else {
+          ctx.fillText(node.label, node.x, node.y);
+        }
+      } else {
+        ctx.textBaseline = 'top';
+        ctx.fillText(node.label, node.x, node.y + (node.radius + 8));
+      }
+    });
+
+    ctx.restore();
+  }
+
+  function drawMinimap() {
+    if (!miniCtx) return;
+    miniCtx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+    miniCtx.fillStyle = 'rgba(0,0,0,0.5)';
+    miniCtx.fillRect(0, 0, miniCanvas.width, miniCanvas.height);
+
+    const miniScale = 0.05;
+    miniCtx.save();
+    miniCtx.translate(miniCanvas.width / 2, miniCanvas.height / 2);
+    miniCtx.scale(miniScale, miniScale);
+
+    nodes.forEach(n => {
+      miniCtx.beginPath();
+      miniCtx.arc(n.x, n.y, n.radius * 2, 0, Math.PI * 2);
+      miniCtx.fillStyle = n.color;
+      miniCtx.fill();
+    });
+
+    // Viewport box
+    miniCtx.strokeStyle = 'white';
+    miniCtx.lineWidth = 40;
+    miniCtx.strokeRect((-offsetX / scale) , (-offsetY / scale), canvas.width/scale, canvas.height/scale);
+    miniCtx.restore();
   }
 
   function getPos(e) {
@@ -666,97 +845,43 @@ const MindmapEngine = (() => {
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
 
-  function hexToRgba(hex, alpha) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r},${g},${b},${alpha})`;
+  function showDetailPanel(node) {
+    const panel = document.getElementById('mmDetailPanel');
+    if (!panel) return;
+    panel.querySelector('.mm-panel-title').textContent = node.label;
+    panel.querySelector('.mm-panel-desc').textContent = node.desc || 'Nội dung đang được cập nhật cho phần này...';
+    panel.querySelector('.mm-panel-badge').style.backgroundColor = node.color;
+    panel.classList.add('active');
+    
+    panel.querySelector('.mm-panel-close').onclick = () => panel.classList.remove('active');
   }
 
-  let animFrame;
-  function animate() {
-    draw();
-    animFrame = requestAnimationFrame(animate);
+  function updateTooltip(node, x, y) {
+    if (!node) { hideTooltip(); return; }
+    let el = document.getElementById('mmCanvasTooltip');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'mmCanvasTooltip';
+      el.className = 'mm-canvas-tooltip';
+      document.body.appendChild(el);
+    }
+    el.innerHTML = `<strong>${node.label}</strong>${node.desc ? '<p>' + node.desc + '</p>' : '<p style="font-style:italic;opacity:0.7">Di chuyển vào sâu hơn để xem chi tiết</p>'}`;
+    
+    // Position tooltip to avoid edges
+    const rect = canvas.getBoundingClientRect();
+    let left = x + 20;
+    let top = y + 20;
+    if (left + 200 > rect.width) left = x - 220;
+    
+    el.style.left = left + 'px';
+    el.style.top = top + 'px';
+    el.classList.add('active');
   }
 
-  function draw() {
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
-
-    // Draw connections
-    nodes.forEach(node => {
-      if (node.parentId === undefined) return;
-      const parent = nodes.find(n => n.id === node.parentId);
-      if (!parent) return;
-
-      ctx.beginPath();
-      ctx.moveTo(parent.x, parent.y);
-      // Curved connection
-      const cx1 = parent.x + (node.x - parent.x) * 0.5;
-      const cy1 = parent.y;
-      const cx2 = parent.x + (node.x - parent.x) * 0.5;
-      const cy2 = node.y;
-      ctx.bezierCurveTo(cx1, cy1, cx2, cy2, node.x, node.y);
-      ctx.strokeStyle = hexToRgba(node.color, 0.35);
-      ctx.lineWidth = node.level === 1 ? 2 : 1.2;
-      ctx.stroke();
-    });
-
-    // Draw nodes
-    nodes.forEach(node => {
-      const isHovered = hoveredNode === node;
-      const glow = isHovered ? 1.3 : 1;
-
-      // Glow effect
-      if (node.level === 0 || isHovered) {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius * 1.4 * glow, 0, Math.PI * 2);
-        const glowGrad = ctx.createRadialGradient(node.x, node.y, node.radius * 0.5, node.x, node.y, node.radius * 1.4 * glow);
-        glowGrad.addColorStop(0, hexToRgba(node.color, 0.25));
-        glowGrad.addColorStop(1, 'transparent');
-        ctx.fillStyle = glowGrad;
-        ctx.fill();
-      }
-
-      // Node circle
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, node.radius * glow, 0, Math.PI * 2);
-      const grad = ctx.createRadialGradient(node.x - node.radius * 0.3, node.y - node.radius * 0.3, 0, node.x, node.y, node.radius * glow);
-      grad.addColorStop(0, hexToRgba(node.color, 0.9));
-      grad.addColorStop(1, hexToRgba(node.color, 0.6));
-      ctx.fillStyle = grad;
-      ctx.fill();
-      ctx.strokeStyle = hexToRgba(node.color, isHovered ? 1 : 0.5);
-      ctx.lineWidth = isHovered ? 3 : 2;
-      ctx.stroke();
-
-      // Label text
-      ctx.fillStyle = 'rgba(255,255,255,0.95)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const fontSize = node.level === 0 ? 13 : node.level === 1 ? 10.5 : 9;
-      ctx.font = `${node.level <= 1 ? 'bold' : '500'} ${fontSize}px 'Be Vietnam Pro', Inter, sans-serif`;
-
-      // Word wrap
-      const words = node.label.split(' ');
-      const maxW = node.radius * 1.6;
-      let lines = [], line = '';
-      words.forEach(word => {
-        const test = line ? line + ' ' + word : word;
-        if (ctx.measureText(test).width < maxW) { line = test; }
-        else { if (line) lines.push(line); line = word; }
-      });
-      if (line) lines.push(line);
-
-      const lineH = fontSize + 3;
-      lines.forEach((l, i) => ctx.fillText(l, node.x, node.y + (i - (lines.length - 1) / 2) * lineH));
-    });
-
-    ctx.restore();
+  function hideTooltip() {
+    const el = document.getElementById('mmCanvasTooltip');
+    if (el) el.classList.remove('active');
   }
 
-  return { init };
+  return { init, focusNode };
 })();

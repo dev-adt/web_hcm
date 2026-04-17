@@ -2,11 +2,11 @@
 // server.js — Express Production Server
 // =====================================================
 require('dotenv').config();
-const express  = require('express');
-const path     = require('path');
-const helmet   = require('helmet');
-const cors     = require('cors');
-const morgan   = require('morgan');
+const express = require('express');
+const path = require('path');
+const helmet = require('helmet');
+const cors = require('cors');
+const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
@@ -89,7 +89,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 // ─── Static Files (Frontend) ──────────────────────
 app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
+  maxAge: 0,
   etag: true,
   setHeaders(res, filePath) {
     if (filePath.endsWith('index.html')) {
@@ -102,10 +102,10 @@ app.use(express.static(path.join(__dirname, 'public'), {
 setupPassport(app);
 
 // ─── API Routes ────────────────────────────────────
-app.use('/api/auth',     authLimiter, require('./server/routes/auth.routes'));
-app.use('/api/chat',     apiLimiter,  require('./server/routes/chat.routes'));
-app.use('/api/quiz',     apiLimiter,  require('./server/routes/quiz.routes'));
-app.use('/api/progress', apiLimiter,  require('./server/routes/progress.routes'));
+app.use('/api/auth', authLimiter, require('./server/routes/auth.routes'));
+app.use('/api/chat', apiLimiter, require('./server/routes/chat.routes'));
+app.use('/api/quiz', apiLimiter, require('./server/routes/quiz.routes'));
+app.use('/api/progress', apiLimiter, require('./server/routes/progress.routes'));
 
 // ─── Health Check ──────────────────────────────────
 app.get('/api/health', (req, res) => {

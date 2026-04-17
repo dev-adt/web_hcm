@@ -238,7 +238,7 @@ function buildChaptersPage() {
     return `
       <div class="chapter-card reveal">
         <div class="chapter-card-icon">${ch.icon}</div>
-        <div class="chapter-card-number">Chương ${ch.id}</div>
+        <div class="chapter-card-number">${ch.id === 0 ? ch.title : 'Chương ' + ch.id}</div>
         <div class="chapter-card-title">${ch.subtitle}</div>
         <p style="font-size:.9rem;line-height:1.65;color:var(--text-secondary);margin:12px 0">${content.summary || ''}</p>
         <div class="chapter-card-stats">
@@ -254,8 +254,34 @@ function buildChaptersPage() {
         </div>
       </div>`;
   }).join('');
-  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+// ─── Guide Page Logic ──────────────────────────────
+function initGuideScrolling() {
+  const links = document.querySelectorAll('.guide-nav-link');
+  const sections = document.querySelectorAll('.guide-section');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+  
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = link.getAttribute('href').substring(1);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
 }
 
 function openChapterTool(chapterId, tool) {
@@ -301,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Router.register('mindmap',    () => { setTimeout(() => { MindmapEngine.init(); }, 120); });
   Router.register('casestudy',  () => { buildCaseStudies(); });
   Router.register('chapters',   () => { buildChaptersPage(); });
+  Router.register('guide',      () => { initGuideScrolling(); });
 
   // Nav auth buttons
   document.getElementById('navLoginBtn')?.addEventListener('click', () => AuthUI.open('login'));

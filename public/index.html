@@ -1,617 +1,1032 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TTHCM AI – Trợ lý học Tư tưởng Hồ Chí Minh</title>
-  <meta name="description" content="Nền tảng học tập AI dành cho sinh viên môn Tư tưởng Hồ Chí Minh. Chat AI, flashcard 3D, quiz trắc nghiệm, sơ đồ tư duy tương tác.">
+  <meta name="description"
+    content="Nền tảng học tập AI dành cho sinh viên môn Tư tưởng Hồ Chí Minh. Chat AI, flashcard 3D, quiz trắc nghiệm, sơ đồ tư duy tương tác.">
   <meta property="og:title" content="TTHCM AI – Trợ lý học Tư tưởng Hồ Chí Minh">
   <meta property="og:description" content="Nền tảng AI học tập hiện đại cho sinh viên Việt Nam">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/auth.css">
-  <link rel="stylesheet" href="/css/chat.css">
-  <link rel="stylesheet" href="/css/tools.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
+  <link rel="stylesheet" href="/css/main.css?v=1.1">
+  <link rel="stylesheet" href="/css/auth.css?v=1.1">
+  <link rel="stylesheet" href="/css/chat.css?v=1.1">
+  <link rel="stylesheet" href="/css/tools.css?v=1.1">
 </head>
+
 <body>
 
-<!-- ═══ NAVBAR ═══════════════════════════════════ -->
-<nav class="navbar" id="navbar">
-  <div class="nav-container">
-    <a class="nav-logo" href="#" data-page="home">
-      <div class="nav-logo-icon">⭐</div>
-      <div class="nav-logo-text">
-        <span class="nav-logo-title">TTHCM AI</span>
-        <span class="nav-logo-subtitle">Trợ lý học thông minh</span>
+  <!-- ═══ NAVBAR ═══════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a class="nav-logo" href="#" data-page="home">
+        <div class="nav-logo-icon">⭐</div>
+        <div class="nav-logo-text">
+          <span class="nav-logo-title">TTHCM AI</span>
+          <span class="nav-logo-subtitle">Trợ lý học thông minh</span>
+        </div>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link active" data-page="home" href="#">🏠 Trang chủ</a>
+        <a class="nav-link" data-page="chat" href="#">🤖 Trợ lý AI</a>
+        <a class="nav-link" data-page="flashcard" href="#">🃏 Flashcard</a>
+        <a class="nav-link" data-page="quiz" href="#">📝 Quiz</a>
+        <a class="nav-link" data-page="mindmap" href="#">🗺️ Sơ đồ tư duy</a>
+        <a class="nav-link" data-page="chapters" href="#">📚 Bài học</a>
+        <a class="nav-link" data-page="guide" href="#">📖 Hướng dẫn</a>
       </div>
-    </a>
 
-    <div class="nav-links" id="navLinks">
-      <a class="nav-link active" data-page="home" href="#">🏠 Trang chủ</a>
-      <a class="nav-link" data-page="chat" href="#">🤖 Trợ lý AI</a>
-      <a class="nav-link" data-page="flashcard" href="#">🃏 Flashcard</a>
-      <a class="nav-link" data-page="quiz" href="#">📝 Quiz</a>
-      <a class="nav-link" data-page="mindmap" href="#">🗺️ Sơ đồ tư duy</a>
-      <a class="nav-link" data-page="chapters" href="#">📚 Bài học</a>
-    </div>
+      <div class="nav-actions">
+        <button class="btn btn-ghost btn-sm" id="navLoginBtn">Đăng nhập</button>
+        <button class="btn btn-primary btn-sm btn-shimmer" id="navRegisterBtn">Đăng ký</button>
 
-    <div class="nav-actions">
-      <button class="btn btn-ghost btn-sm" id="navLoginBtn">Đăng nhập</button>
-      <button class="btn btn-primary btn-sm btn-shimmer" id="navRegisterBtn">Đăng ký</button>
-
-      <div class="dropdown" id="userDropdown" style="display:none">
-        <button class="nav-user-btn" id="navUserAvatar">SD</button>
-        <div class="dropdown-menu">
-          <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
-            <div style="font-size:0.85rem;font-weight:700;color:var(--text-primary)" id="navUserName"></div>
-            <div style="font-size:0.72rem;color:var(--text-muted)">Tài khoản sinh viên</div>
-          </div>
-          <button class="dropdown-item" data-page="chat">🤖 Trợ lý AI</button>
-          <button class="dropdown-item" data-page="chapters">📚 Bài học của tôi</button>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item danger" id="logoutBtn">🚪 Đăng xuất</button>
-        </div>
-      </div>
-      <button class="nav-hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</nav>
-
-<div class="page-wrapper">
-
-<!-- ═══ HOME PAGE ══════════════════════════════════ -->
-<div class="page active" id="homePage">
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="particles"></div>
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:48px;width:100%">
-      <div class="hero-content">
-        <div class="hero-tag">🤖 Ứng dụng AI học tập cho sinh viên Việt Nam</div>
-        <h1 class="hero-title">
-          Học <span class="highlight">Tư tưởng<br>Hồ Chí Minh</span><br>thông minh hơn với AI
-        </h1>
-        <p class="hero-subtitle">Nền tảng học tập tích hợp AI tiên tiến giúp sinh viên nắm vững môn học qua chat AI, flashcard 3D, quiz và sơ đồ tư duy tương tác.</p>
-        <div class="hero-cta">
-          <button class="btn btn-gold btn-xl btn-shimmer" id="heroStartBtn">🚀 Bắt đầu học ngay — Miễn phí</button>
-          <button class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2)" id="heroChatBtn">🤖 Thử Trợ lý AI</button>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="6">6</span></div><div class="hero-stat-label">Chương học</div></div>
-          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="20">20</span>+</div><div class="hero-stat-label">Flashcard</div></div>
-          <div class="hero-stat"><div class="hero-stat-num"><span class="counter" data-target="15">15</span>+</div><div class="hero-stat-label">Câu Quiz</div></div>
-          <div class="hero-stat"><div class="hero-stat-num">AI</div><div class="hero-stat-label">24/7</div></div>
-        </div>
-      </div>
-      <div class="hero-visual" id="heroVisual"></div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="section" id="featuresSection">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">✨ Tính năng nổi bật</div>
-        <h2>Mọi công cụ bạn cần để học hiệu quả</h2>
-        <p>Được thiết kế riêng cho sinh viên học môn Tư tưởng Hồ Chí Minh, kết hợp AI với phương pháp sư phạm hiện đại.</p>
-      </div>
-      <div class="grid grid-3">
-        <div class="card card-red reveal" style="cursor:pointer" data-navigate="chat">
-          <div class="feature-icon feature-icon-red">🤖</div>
-          <h4>Trợ lý AI Chat</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Hỏi bất kỳ câu hỏi nào về TTHCM và nhận giải thích chi tiết. 4 chế độ học, hỗ trợ giọng nói.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-red">Chat AI</span><span class="badge badge-gold">Giọng nói</span><span class="badge badge-green">4 Chế độ</span></div>
-        </div>
-        <div class="card reveal" style="cursor:pointer;animation-delay:.1s" data-navigate="flashcard">
-          <div class="feature-icon feature-icon-gold">🃏</div>
-          <h4>Flashcard 3D</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Ghi nhớ khái niệm với hệ thống thẻ lật 3D. Phân loại theo chương, theo dõi tiến độ và học ngẫu nhiên.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-gold">20+ thẻ</span><span class="badge badge-gray">6 chương</span></div>
-        </div>
-        <div class="card reveal" style="cursor:pointer;animation-delay:.2s" data-navigate="quiz">
-          <div class="feature-icon feature-icon-blue">📝</div>
-          <h4>Quiz Trắc nghiệm</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Luyện thi với bộ câu hỏi phong phú. 3 chế độ: Luyện tập, Thi thử có đếm giờ và ôn theo chương.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-blue">15+ câu</span><span class="badge badge-red">Giải thích đáp án</span></div>
-        </div>
-        <div class="card reveal" style="cursor:pointer;animation-delay:.1s" data-navigate="mindmap">
-          <div class="feature-icon feature-icon-green">🗺️</div>
-          <h4>Sơ đồ tư duy</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Hình dung toàn bộ hệ thống TTHCM qua canvas tương tác. Zoom, kéo thả, hover để xem chi tiết.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-green">Canvas tương tác</span><span class="badge badge-gray">30+ nodes</span></div>
-        </div>
-        <div class="card reveal" style="cursor:pointer;animation-delay:.2s" data-navigate="casestudy">
-          <div class="feature-icon feature-icon-purple">📋</div>
-          <h4>Tình huống phân tích</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Học qua tình huống thực tế, vận dụng Tư tưởng HCM để phân tích các vấn đề xã hội đương đại.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-blue">3 tình huống</span></div>
-        </div>
-        <div class="card reveal" style="cursor:pointer;animation-delay:.3s" data-navigate="chapters">
-          <div class="feature-icon feature-icon-red">📚</div>
-          <h4>6 Chương học đầy đủ</h4>
-          <p style="font-size:0.875rem;margin:8px 0 14px">Toàn bộ nội dung giáo trình chuẩn. Theo dõi tiến độ từng chương và ôn tập có hệ thống.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-red">6 chương</span><span class="badge badge-gold">Tiến độ</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section class="section-sm" id="statsSection" style="background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div class="container">
-      <div class="grid grid-4" style="text-align:center">
-        <div class="reveal"><div class="stat-number"><span class="counter" data-target="6">6</span></div><p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Chương học</p></div>
-        <div class="reveal"><div class="stat-number"><span class="counter" data-target="20">20</span>+</div><p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Flashcard</p></div>
-        <div class="reveal"><div class="stat-number"><span class="counter" data-target="15">15</span>+</div><p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Câu hỏi Quiz</p></div>
-        <div class="reveal">
-          <div class="stat-number" style="background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">AI</div>
-          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Giải đáp 24/7</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">📖 Cách sử dụng</div>
-        <h2>Chỉ 3 bước để học hiệu quả</h2>
-      </div>
-      <div class="grid grid-3" style="gap:32px;text-align:center">
-        <div class="reveal">
-          <div style="width:60px;height:60px;background:var(--grad-red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;margin:0 auto 18px;box-shadow:var(--shadow-red)">1</div>
-          <h4 style="margin-bottom:8px">Đăng ký tài khoản</h4>
-          <p style="font-size:0.875rem">Miễn phí hoàn toàn. Lưu tiến độ học, lịch sử chat, kết quả quiz của bạn.</p>
-        </div>
-        <div class="reveal" style="animation-delay:.15s">
-          <div style="width:60px;height:60px;background:var(--grad-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;margin:0 auto 18px;box-shadow:var(--shadow-gold)">2</div>
-          <h4 style="margin-bottom:8px">Chọn công cụ học</h4>
-          <p style="font-size:0.875rem">Chat AI để hiểu sâu lý luận, ôn flashcard để ghi nhớ, làm quiz để kiểm tra bản thân.</p>
-        </div>
-        <div class="reveal" style="animation-delay:.3s">
-          <div style="width:60px;height:60px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 18px;box-shadow:0 4px 15px rgba(16,185,129,0.3)">🏆</div>
-          <h4 style="margin-bottom:8px">Nắm chắc kiến thức</h4>
-          <p style="font-size:0.875rem">Theo dõi tiến độ qua dashboard. Ôn thông minh các nội dung còn yếu và tự tin bước vào kỳ thi.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Compare -->
-  <section class="section" style="background:white">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-tag">⚡ So sánh</div>
-        <h2>Tại sao chọn TTHCM AI?</h2>
-      </div>
-      <div class="reveal">
-        <table class="compare-table">
-          <thead><tr><th>Tiêu chí</th><th>📖 Học truyền thống</th><th>🤖 TTHCM AI</th></tr></thead>
-          <tbody>
-            <tr><td>Tra cứu kiến thức</td><td>Tìm sách, mất thời gian</td><td>✅ Hỏi AI — nhận ngay tức thì</td></tr>
-            <tr><td>Ghi nhớ nội dung</td><td>Đọc đi đọc lại thụ động</td><td>✅ Flashcard 3D, phân loại nhớ/chưa nhớ</td></tr>
-            <tr><td>Kiểm tra bản thân</td><td>Phụ thuộc vào đề thi sẵn có</td><td>✅ Quiz ngay lập tức với giải thích</td></tr>
-            <tr><td>Xem tổng quan</td><td>Vẽ tay, phức tạp</td><td>✅ Sơ đồ tư duy tương tác</td></tr>
-            <tr><td>Lưu tiến độ</td><td>Không có hệ thống</td><td>✅ Dashboard cá nhân, theo dõi từng chương</td></tr>
-            <tr><td>Truy cập</td><td>Cần đến thư viện, lớp học</td><td>✅ Mọi lúc, mọi nơi, mọi thiết bị</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section">
-    <div class="container" style="max-width:720px">
-      <div class="section-header reveal"><div class="section-tag">❓ FAQ</div><h2>Câu hỏi thường gặp</h2></div>
-      <div>
-        <div class="accordion-item reveal"><button class="accordion-header">Ứng dụng có miễn phí không? <span class="accordion-arrow">⌄</span></button><div class="accordion-body"><div class="accordion-content">Hoàn toàn miễn phí cho sinh viên! Chat AI, Flashcard, Quiz, Mindmap đều không mất phí. Chỉ cần đăng ký tài khoản để lưu tiến độ.</div></div></div>
-        <div class="accordion-item reveal"><button class="accordion-header">Dữ liệu có được lưu lại không? <span class="accordion-arrow">⌄</span></button><div class="accordion-body"><div class="accordion-content">Có! Lịch sử chat, kết quả quiz và tiến độ flashcard được lưu vào database của server gắn với tài khoản của bạn. Đăng nhập ở bất kỳ thiết bị nào cũng thấy dữ liệu.</div></div></div>
-        <div class="accordion-item reveal"><button class="accordion-header">Nội dung có đủ cho kỳ thi không? <span class="accordion-arrow">⌄</span></button><div class="accordion-body"><div class="accordion-content">Bộ flashcard và quiz bao phủ đầy đủ 6 chương theo giáo trình chuẩn Bộ GD&ĐT. AI được trained trên toàn bộ nội dung môn học.</div></div></div>
-        <div class="accordion-item reveal"><button class="accordion-header">Có dùng được trên điện thoại không? <span class="accordion-arrow">⌄</span></button><div class="accordion-body"><div class="accordion-content">Có! Giao diện responsive, hoạt động tốt trên mọi thiết bị. Tính năng nhập bằng giọng nói (vi-VN) cũng hoạt động trên điện thoại.</div></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section" style="background:white;text-align:center">
-    <div class="container" style="max-width:600px">
-      <div class="reveal">
-        <div style="font-size:3rem;margin-bottom:16px">⭐</div>
-        <h2 style="margin-bottom:12px">Bắt đầu học ngay hôm nay</h2>
-        <p style="margin-bottom:28px">Miễn phí hoàn toàn. Không cần thẻ tín dụng.</p>
-        <button class="btn btn-primary btn-xl btn-shimmer" onclick="AuthUI.open('register')">🚀 Đăng ký miễn phí</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="footer-logo">
-            <div style="width:32px;height:32px;background:var(--grad-red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">⭐</div>
-            <span style="font-weight:800;color:white;font-family:var(--font-display)">TTHCM AI</span>
-          </div>
-          <p class="footer-desc">Nền tảng học tập AI cho sinh viên môn Tư tưởng Hồ Chí Minh. Hiện đại, hiệu quả, miễn phí.</p>
-          <span style="display:inline-block;padding:4px 10px;background:rgba(196,30,58,0.15);border:1px solid rgba(196,30,58,0.25);border-radius:6px;font-size:0.72rem;color:#FCA5A5">🇻🇳 Made in Vietnam</span>
-        </div>
-        <div>
-          <p class="footer-heading">Công cụ học</p>
-          <ul class="footer-links">
-            <li><a href="#" data-page="chat">🤖 Trợ lý AI Chat</a></li>
-            <li><a href="#" data-page="flashcard">🃏 Flashcard 3D</a></li>
-            <li><a href="#" data-page="quiz">📝 Quiz Trắc nghiệm</a></li>
-            <li><a href="#" data-page="mindmap">🗺️ Sơ đồ tư duy</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-heading">Nội dung</p>
-          <ul class="footer-links">
-            <li><a href="#" data-page="chapters">Nguồn gốc TTHCM</a></li>
-            <li><a href="#" data-page="chapters">Độc lập dân tộc</a></li>
-            <li><a href="#" data-page="chapters">Đảng Cộng sản</a></li>
-            <li><a href="#" data-page="chapters">Đại đoàn kết DT</a></li>
-            <li><a href="#" data-page="chapters">Đạo đức HCM</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-heading">Hỗ trợ</p>
-          <ul class="footer-links">
-            <li><a href="#">📖 Hướng dẫn</a></li>
-            <li><a href="#">❓ FAQ</a></li>
-            <li><a href="#">📧 Liên hệ</a></li>
-            <li><a href="#">🔒 Bảo mật</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="footer-copy">© 2026 TTHCM AI Platform. Dành cho sinh viên Việt Nam.</div>
-        <div style="font-size:0.78rem;color:rgba(255,255,255,0.3)">⭐ Tư tưởng Hồ Chí Minh • 🇻🇳 Việt Nam</div>
-      </div>
-    </div>
-  </footer>
-
-</div><!-- /homePage -->
-
-<!-- ═══ CHAT PAGE ═══════════════════════════════════ -->
-<div class="page" id="chatPage">
-  <div class="chat-page">
-    <div class="chat-layout">
-      <div class="chat-sidebar" id="chatSidebar">
-        <div class="sidebar-header">
-          <p class="sidebar-title">Cuộc trò chuyện</p>
-          <button class="new-chat-btn" id="newChatBtn">✚ Chat mới</button>
-        </div>
-        <div class="sidebar-scroll">
-          <div class="sidebar-section">
-            <p class="sidebar-section-title">📚 Gợi ý chủ đề</p>
-            <div class="topic-list">
-              <button class="topic-item" data-prompt="Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?"><span class="topic-item-icon">📖</span>Nguồn gốc TTHCM</button>
-              <button class="topic-item" data-prompt="Ý nghĩa câu nói Không có gì quý hơn độc lập tự do?"><span class="topic-item-icon">🏴</span>Độc lập dân tộc</button>
-              <button class="topic-item" data-prompt="Bản chất của CNXH theo Hồ Chí Minh là gì?"><span class="topic-item-icon">⭐</span>Chủ nghĩa XH</button>
-              <button class="topic-item" data-prompt="5 đức tính cơ bản trong đạo đức Hồ Chí Minh?"><span class="topic-item-icon">🌟</span>Đạo đức HCM</button>
-              <button class="topic-item" data-prompt="Đảng Cộng sản Việt Nam được thành lập như thế nào?"><span class="topic-item-icon">🏛️</span>Đảng Cộng sản</button>
-              <button class="topic-item" data-prompt="Vai trò của đại đoàn kết dân tộc theo HCM?"><span class="topic-item-icon">🤝</span>Đại đoàn kết</button>
-              <button class="topic-item" data-prompt="Phong cách Hồ Chí Minh gồm những phong cách nào?"><span class="topic-item-icon">👤</span>Phong cách HCM</button>
-              <button class="topic-item" data-prompt="Nhà nước của dân do dân vì dân có nghĩa là gì?"><span class="topic-item-icon">🏛️</span>Nhà nước & DC</button>
+        <div class="dropdown" id="userDropdown" style="display:none">
+          <button class="nav-user-btn" id="navUserAvatar">SD</button>
+          <div class="dropdown-menu">
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+              <div style="font-size:0.85rem;font-weight:700;color:var(--text-primary)" id="navUserName"></div>
+              <div style="font-size:0.72rem;color:var(--text-muted)">Tài khoản sinh viên</div>
             </div>
-          </div>
-          <div class="sidebar-section" style="flex:1">
-            <p class="sidebar-section-title">🕐 Lịch sử</p>
-            <div class="history-list" id="chatHistoryList"><div class="history-item" style="cursor:default">Chưa có lịch sử</div></div>
+            <button class="dropdown-item" data-page="chat">🤖 Trợ lý AI</button>
+            <button class="dropdown-item" data-page="chapters">📚 Bài học của tôi</button>
+            <button class="dropdown-item" data-page="guide">📖 Hướng dẫn sử dụng</button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" id="logoutBtn">🚪 Đăng xuất</button>
           </div>
         </div>
+        <button class="nav-hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
       </div>
-      <div class="chat-main">
-        <div class="chat-toolbar">
-          <div class="chat-toolbar-left">
-            <button class="sidebar-toggle-btn" id="sidebarToggleBtn">☰</button>
-            <div class="chat-topic-header"><div class="chat-topic-dot"></div><span class="chat-mode-label">Trợ lý TTHCM</span></div>
-          </div>
-          <div class="mode-pills" id="modePills">
-            <button class="mode-pill active" data-mode="qa">💬 Hỏi & Đáp</button>
-            <button class="mode-pill" data-mode="explain">🔍 Giải thích sâu</button>
-            <button class="mode-pill" data-mode="exam">📝 Luyện thi</button>
-            <button class="mode-pill" data-mode="summary">📋 Tóm tắt</button>
-          </div>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-area">
-          <div class="chat-input-container">
-            <div class="chat-input-box">
-              <textarea class="chat-textarea" id="chatInput" placeholder="Hỏi về Tư tưởng Hồ Chí Minh... (Enter gửi, Shift+Enter xuống dòng)" rows="1"></textarea>
-              <div class="chat-input-actions">
-                <button class="chat-action-btn" id="chatVoiceBtn" title="Giọng nói (vi-VN)">🎤</button>
-                <button class="chat-send-btn" id="chatSendBtn" disabled>➤</button>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- ═══ HOME PAGE ══════════════════════════════════ -->
+    <div class="page active" id="homePage">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="particles"></div>
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+
+        <div class="container" style="
+	    display:flex;
+	    align-items:center;
+	    justify-content:center;
+	    text-align:center;
+	    width:100%;
+	  ">
+          <div class="hero-content" style="max-width:720px;margin:0 auto">
+
+            <div class="hero-tag">🤖 Ứng dụng AI học tập cho sinh viên Việt Nam</div>
+
+            <h1 class="hero-title">
+              Học <span class="highlight">Tư tưởng<br>Hồ Chí Minh</span><br>
+              thông minh hơn với AI
+            </h1>
+
+            <p class="hero-subtitle">
+              Nền tảng học tập tích hợp AI tiên tiến giúp sinh viên nắm vững môn học qua chat AI, flashcard 3D, quiz và
+              sơ đồ tư duy tương tác.
+            </p>
+
+            <div class="hero-cta" style="justify-content:center">
+              <button class="btn btn-gold btn-xl btn-shimmer" id="heroStartBtn">
+                🚀 Bắt đầu học ngay — Miễn phí
+              </button>
+              <button class="btn btn-lg" style="
+	          background:rgba(255,255,255,0.1);
+	          color:white;
+	          border:1px solid rgba(255,255,255,0.2)
+	        " id="heroChatBtn">
+                🤖 Thử Trợ lý AI
+              </button>
+            </div>
+
+            <div class="hero-stats" style="justify-content:center">
+              <div class="hero-stat">
+                <div class="hero-stat-num"><span class="counter" data-target="8">8</span></div>
+                <div class="hero-stat-label">Chương học</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-num"><span class="counter" data-target="80">80</span>+</div>
+                <div class="hero-stat-label">Flashcard</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-num"><span class="counter" data-target="80">80</span>+</div>
+                <div class="hero-stat-label">Câu Quiz</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-num">AI</div>
+                <div class="hero-stat-label">24/7</div>
               </div>
             </div>
-            <div class="chat-hints">
-              <span class="chat-hint"><kbd>Enter</kbd> gửi</span>
-              <span class="chat-hint">•</span>
-              <span class="chat-hint"><kbd>Shift</kbd>+<kbd>Enter</kbd> xuống dòng</span>
-              <span class="chat-hint">•</span>
-              <span class="chat-hint">🎤 Giọng nói vi-VN</span>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section" id="featuresSection">
+        <div class="container">
+          <div class="section-header reveal">
+            <div class="section-tag">✨ Tính năng nổi bật</div>
+            <h2>Mọi công cụ bạn cần để học hiệu quả</h2>
+            <p>Được thiết kế riêng cho sinh viên học môn Tư tưởng Hồ Chí Minh, kết hợp AI với phương pháp sư phạm hiện
+              đại.</p>
+          </div>
+          <div class="grid grid-3">
+            <div class="card card-red reveal" style="cursor:pointer" data-navigate="chat">
+              <div class="feature-icon feature-icon-red">🤖</div>
+              <h4>Trợ lý AI Chat</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Hỏi bất kỳ câu hỏi nào về TTHCM và nhận giải thích chi
+                tiết. 4 chế độ học, hỗ trợ giọng nói.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-red">Chat AI</span><span
+                  class="badge badge-gold">Giọng nói</span><span class="badge badge-green">4 Chế độ</span></div>
+            </div>
+            <div class="card reveal" style="cursor:pointer;animation-delay:.1s" data-navigate="flashcard">
+              <div class="feature-icon feature-icon-gold">🃏</div>
+              <h4>Flashcard 3D</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Ghi nhớ khái niệm với hệ thống thẻ lật 3D. Phân loại theo
+                chương, theo dõi tiến độ và học ngẫu nhiên.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-gold">80+ thẻ</span><span
+                  class="badge badge-gray">8 chương</span></div>
+            </div>
+            <div class="card reveal" style="cursor:pointer;animation-delay:.2s" data-navigate="quiz">
+              <div class="feature-icon feature-icon-blue">📝</div>
+              <h4>Quiz Trắc nghiệm</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Luyện thi với bộ câu hỏi phong phú. 3 chế độ: Luyện tập,
+                Thi thử có đếm giờ và ôn theo chương.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-blue">80+ câu</span><span
+                  class="badge badge-red">Giải thích đáp án</span></div>
+            </div>
+            <div class="card reveal" style="cursor:pointer;animation-delay:.1s" data-navigate="mindmap">
+              <div class="feature-icon feature-icon-green">🗺️</div>
+              <h4>Sơ đồ tư duy</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Hình dung toàn bộ hệ thống TTHCM qua canvas tương tác.
+                Zoom, kéo thả, hover để xem chi tiết.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-green">Canvas tương
+                  tác</span><span class="badge badge-gray">30+ nodes</span></div>
+            </div>
+            <div class="card reveal" style="cursor:pointer;animation-delay:.2s" data-navigate="casestudy">
+              <div class="feature-icon feature-icon-purple">📋</div>
+              <h4>Tình huống phân tích</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Học qua tình huống thực tế, vận dụng Tư tưởng HCM để phân
+                tích các vấn đề xã hội đương đại.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-blue">3 tình huống</span></div>
+            </div>
+            <div class="card reveal" style="cursor:pointer;animation-delay:.3s" data-navigate="chapters">
+              <div class="feature-icon feature-icon-red">📚</div>
+              <h4>8 Chương học đầy đủ</h4>
+              <p style="font-size:0.875rem;margin:8px 0 14px">Toàn bộ nội dung giáo trình chuẩn. Theo dõi tiến độ từng
+                chương và ôn tập có hệ thống.</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge badge-red">8 chương</span><span
+                  class="badge badge-gold">Tiến độ</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="section-sm" id="statsSection"
+        style="background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div class="container">
+          <div class="grid grid-4" style="text-align:center">
+            <div class="reveal">
+              <div class="stat-number"><span class="counter" data-target="8">8</span></div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Chương học</p>
+            </div>
+            <div class="reveal">
+              <div class="stat-number"><span class="counter" data-target="80">80</span>+</div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Flashcard</p>
+            </div>
+            <div class="reveal">
+              <div class="stat-number"><span class="counter" data-target="80">80</span>+</div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Câu hỏi Quiz</p>
+            </div>
+            <div class="reveal">
+              <div class="stat-number"
+                style="background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+                AI</div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Giải đáp 24/7</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header reveal">
+            <div class="section-tag">📖 Cách sử dụng</div>
+            <h2>Chỉ 3 bước để học hiệu quả</h2>
+          </div>
+          <div class="grid grid-3" style="gap:32px;text-align:center">
+            <div class="reveal">
+              <div
+                style="width:60px;height:60px;background:var(--grad-red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;margin:0 auto 18px;box-shadow:var(--shadow-red)">
+                1</div>
+              <h4 style="margin-bottom:8px">Đăng ký tài khoản</h4>
+              <p style="font-size:0.875rem">Miễn phí hoàn toàn. Lưu tiến độ học, lịch sử chat, kết quả quiz của bạn.</p>
+            </div>
+            <div class="reveal" style="animation-delay:.15s">
+              <div
+                style="width:60px;height:60px;background:var(--grad-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;margin:0 auto 18px;box-shadow:var(--shadow-gold)">
+                2</div>
+              <h4 style="margin-bottom:8px">Chọn công cụ học</h4>
+              <p style="font-size:0.875rem">Chat AI để hiểu sâu lý luận, ôn flashcard để ghi nhớ, làm quiz để kiểm tra
+                bản thân.</p>
+            </div>
+            <div class="reveal" style="animation-delay:.3s">
+              <div
+                style="width:60px;height:60px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 18px;box-shadow:0 4px 15px rgba(16,185,129,0.3)">
+                🏆</div>
+              <h4 style="margin-bottom:8px">Nắm chắc kiến thức</h4>
+              <p style="font-size:0.875rem">Theo dõi tiến độ qua dashboard. Ôn thông minh các nội dung còn yếu và tự tin
+                bước vào kỳ thi.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Compare -->
+      <section class="section" style="background:white">
+        <div class="container">
+          <div class="section-header reveal">
+            <div class="section-tag">⚡ So sánh</div>
+            <h2>Tại sao chọn TTHCM AI?</h2>
+          </div>
+          <div class="reveal">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Tiêu chí</th>
+                  <th>📖 Học truyền thống</th>
+                  <th>🤖 TTHCM AI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tra cứu kiến thức</td>
+                  <td>Tìm sách, mất thời gian</td>
+                  <td>✅ Hỏi AI — nhận ngay tức thì</td>
+                </tr>
+                <tr>
+                  <td>Ghi nhớ nội dung</td>
+                  <td>Đọc đi đọc lại thụ động</td>
+                  <td>✅ Flashcard 3D, phân loại nhớ/chưa nhớ</td>
+                </tr>
+                <tr>
+                  <td>Kiểm tra bản thân</td>
+                  <td>Phụ thuộc vào đề thi sẵn có</td>
+                  <td>✅ Quiz ngay lập tức với giải thích</td>
+                </tr>
+                <tr>
+                  <td>Xem tổng quan</td>
+                  <td>Vẽ tay, phức tạp</td>
+                  <td>✅ Sơ đồ tư duy tương tác</td>
+                </tr>
+                <tr>
+                  <td>Lưu tiến độ</td>
+                  <td>Không có hệ thống</td>
+                  <td>✅ Dashboard cá nhân, theo dõi từng chương</td>
+                </tr>
+                <tr>
+                  <td>Truy cập</td>
+                  <td>Cần đến thư viện, lớp học</td>
+                  <td>✅ Mọi lúc, mọi nơi, mọi thiết bị</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section">
+        <div class="container" style="max-width:720px">
+          <div class="section-header reveal">
+            <div class="section-tag">❓ FAQ</div>
+            <h2>Câu hỏi thường gặp</h2>
+          </div>
+          <div>
+            <div class="accordion-item reveal"><button class="accordion-header">Ứng dụng có miễn phí không? <span
+                  class="accordion-arrow">⌄</span></button>
+              <div class="accordion-body">
+                <div class="accordion-content">Hoàn toàn miễn phí cho sinh viên! Chat AI, Flashcard, Quiz, Mindmap đều
+                  không mất phí. Chỉ cần đăng ký tài khoản để lưu tiến độ.</div>
+              </div>
+            </div>
+            <div class="accordion-item reveal"><button class="accordion-header">Dữ liệu có được lưu lại không? <span
+                  class="accordion-arrow">⌄</span></button>
+              <div class="accordion-body">
+                <div class="accordion-content">Có! Lịch sử chat, kết quả quiz và tiến độ flashcard được lưu vào database
+                  của server gắn với tài khoản của bạn. Đăng nhập ở bất kỳ thiết bị nào cũng thấy dữ liệu.</div>
+              </div>
+            </div>
+            <div class="accordion-item reveal"><button class="accordion-header">Nội dung có đủ cho kỳ thi không? <span
+                  class="accordion-arrow">⌄</span></button>
+              <div class="accordion-body">
+                <div class="accordion-content">Bộ flashcard và quiz bao phủ đầy đủ 8 chương theo giáo trình chuẩn Bộ
+                  GD&ĐT. AI được trained trên toàn bộ nội dung môn học.</div>
+              </div>
+            </div>
+            <div class="accordion-item reveal"><button class="accordion-header">Có dùng được trên điện thoại không?
+                <span class="accordion-arrow">⌄</span></button>
+              <div class="accordion-body">
+                <div class="accordion-content">Có! Giao diện responsive, hoạt động tốt trên mọi thiết bị. Tính năng nhập
+                  bằng giọng nói (vi-VN) cũng hoạt động trên điện thoại.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section" style="background:white;text-align:center">
+        <div class="container" style="max-width:600px">
+          <div class="reveal">
+            <div style="font-size:3rem;margin-bottom:16px">⭐</div>
+            <h2 style="margin-bottom:12px">Bắt đầu học ngay hôm nay</h2>
+            <p style="margin-bottom:28px">Miễn phí hoàn toàn. Không cần thẻ tín dụng.</p>
+            <button class="btn btn-primary btn-xl btn-shimmer" onclick="AuthUI.open('register')">🚀 Đăng ký miễn
+              phí</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="container">
+          <div class="footer-grid">
+            <div>
+              <div class="footer-logo">
+                <div
+                  style="width:32px;height:32px;background:var(--grad-red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">
+                  ⭐</div>
+                <span style="font-weight:800;color:white;font-family:var(--font-display)">TTHCM AI</span>
+              </div>
+              <p class="footer-desc">Nền tảng học tập AI cho sinh viên môn Tư tưởng Hồ Chí Minh. Hiện đại, hiệu quả,
+                miễn phí.</p>
+              <span
+                style="display:inline-block;padding:4px 10px;background:rgba(196,30,58,0.15);border:1px solid rgba(196,30,58,0.25);border-radius:6px;font-size:0.72rem;color:#FCA5A5">🇻🇳
+                Made in Vietnam</span>
+            </div>
+            <div>
+              <p class="footer-heading">Công cụ học</p>
+              <ul class="footer-links">
+                <li><a href="#" data-page="chat">🤖 Trợ lý AI Chat</a></li>
+                <li><a href="#" data-page="flashcard">🃏 Flashcard 3D</a></li>
+                <li><a href="#" data-page="quiz">📝 Quiz Trắc nghiệm</a></li>
+                <li><a href="#" data-page="mindmap">🗺️ Sơ đồ tư duy</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer-heading">Nội dung</p>
+              <ul class="footer-links">
+                <li><a href="#" data-page="chapters">Nguồn gốc TTHCM</a></li>
+                <li><a href="#" data-page="chapters">Độc lập dân tộc</a></li>
+                <li><a href="#" data-page="chapters">Đảng Cộng sản</a></li>
+                <li><a href="#" data-page="chapters">Đại đoàn kết DT</a></li>
+                <li><a href="#" data-page="chapters">Đạo đức HCM</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="footer-heading">Hỗ trợ</p>
+              <ul class="footer-links">
+                <li><a href="#" data-page="guide">📖 Hướng dẫn</a></li>
+                <li><a href="#">❓ FAQ</a></li>
+                <li><a href="#">📧 Liên hệ</a></li>
+                <li><a href="#">🔒 Bảo mật</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="footer-copy">© 2026 TTHCM AI Platform. Dành cho sinh viên Việt Nam.</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.3)">⭐ Tư tưởng Hồ Chí Minh • 🇻🇳 Việt Nam</div>
+          </div>
+        </div>
+      </footer>
+
+    </div><!-- /homePage -->
+
+    <!-- ═══ CHAT PAGE ═══════════════════════════════════ -->
+    <div class="page" id="chatPage">
+      <div class="chat-page">
+        <div class="chat-layout">
+          <div class="chat-sidebar" id="chatSidebar">
+            <div class="sidebar-header">
+              <p class="sidebar-title">Cuộc trò chuyện</p>
+              <button class="new-chat-btn" id="newChatBtn">✚ Chat mới</button>
+            </div>
+            <div class="sidebar-scroll">
+              <div class="sidebar-section">
+                <p class="sidebar-section-title">📚 Gợi ý chủ đề</p>
+                <div class="topic-list">
+                  <button class="topic-item" data-prompt="Nguồn gốc lý luận của Tư tưởng Hồ Chí Minh là gì?"><span
+                      class="topic-item-icon">📖</span>Nguồn gốc TTHCM</button>
+                  <button class="topic-item" data-prompt="Ý nghĩa câu nói Không có gì quý hơn độc lập tự do?"><span
+                      class="topic-item-icon">🏴</span>Độc lập dân tộc</button>
+                  <button class="topic-item" data-prompt="Bản chất của CNXH theo Hồ Chí Minh là gì?"><span
+                      class="topic-item-icon">⭐</span>Chủ nghĩa XH</button>
+                  <button class="topic-item" data-prompt="5 đức tính cơ bản trong đạo đức Hồ Chí Minh?"><span
+                      class="topic-item-icon">🌟</span>Đạo đức HCM</button>
+                  <button class="topic-item" data-prompt="Đảng Cộng sản Việt Nam được thành lập như thế nào?"><span
+                      class="topic-item-icon">🏛️</span>Đảng Cộng sản</button>
+                  <button class="topic-item" data-prompt="Vai trò của đại đoàn kết dân tộc theo HCM?"><span
+                      class="topic-item-icon">🤝</span>Đại đoàn kết</button>
+                  <button class="topic-item" data-prompt="Phong cách Hồ Chí Minh gồm những phong cách nào?"><span
+                      class="topic-item-icon">👤</span>Phong cách HCM</button>
+                  <button class="topic-item" data-prompt="Nhà nước của dân do dân vì dân có nghĩa là gì?"><span
+                      class="topic-item-icon">🏛️</span>Nhà nước & DC</button>
+                </div>
+              </div>
+              <div class="sidebar-section" style="flex:1">
+                <p class="sidebar-section-title">🕐 Lịch sử</p>
+                <div class="history-list" id="chatHistoryList">
+                  <div class="history-item" style="cursor:default">Chưa có lịch sử</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-toolbar">
+              <div class="chat-toolbar-left">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">☰</button>
+                <div class="chat-topic-header">
+                  <div class="chat-topic-dot"></div><span class="chat-mode-label">Trợ lý TTHCM</span>
+                </div>
+              </div>
+              <div class="mode-pills" id="modePills">
+                <button class="mode-pill active" data-mode="qa">💬 Hỏi & Đáp</button>
+                <button class="mode-pill" data-mode="explain">🔍 Giải thích sâu</button>
+                <button class="mode-pill" data-mode="exam">📝 Luyện thi</button>
+                <button class="mode-pill" data-mode="summary">📋 Tóm tắt</button>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+              <div class="chat-input-container">
+                <div class="chat-input-box">
+                  <textarea class="chat-textarea" id="chatInput"
+                    placeholder="Hỏi về Tư tưởng Hồ Chí Minh... (Enter gửi, Shift+Enter xuống dòng)"
+                    rows="1"></textarea>
+                  <div class="chat-input-actions">
+                    <button class="chat-action-btn" id="chatVoiceBtn" title="Giọng nói (vi-VN)">🎤</button>
+                    <button class="chat-send-btn" id="chatSendBtn" disabled>➤</button>
+                  </div>
+                </div>
+                <div class="chat-hints">
+                  <span class="chat-hint"><kbd>Enter</kbd> gửi</span>
+                  <span class="chat-hint">•</span>
+                  <span class="chat-hint"><kbd>Shift</kbd>+<kbd>Enter</kbd> xuống dòng</span>
+                  <span class="chat-hint">•</span>
+                  <span class="chat-hint">🎤 Giọng nói vi-VN</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ═══ FLASHCARD PAGE ══════════════════════════════ -->
-<div class="page" id="flashcardPage">
-  <div class="container tools-page">
-    <div class="tools-header">
-      <h1>🃏 Flashcard — Ôn luyện nhanh</h1>
-      <p>Click thẻ để lật. Phím tắt: <kbd>Space</kbd> lật, <kbd>←→</kbd> điều hướng, <kbd>K</kbd> Đã nhớ, <kbd>D</kbd> Chưa nhớ.</p>
-    </div>
-    <div class="chapter-filter" id="fcChapterFilter"></div>
-    <div class="flashcard-section">
-      <div class="flashcard-progress-header">
-        <div class="flashcard-count">Thẻ <span id="fcCurrentNum">1</span> / <span id="fcTotalNum">20</span></div>
-        <div style="font-size:0.78rem;color:var(--text-muted)" id="fcChapterLabel"></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-ghost btn-sm" id="fcShuffleBtn">🔀 Ngẫu nhiên</button>
-          <button class="btn btn-ghost btn-sm" id="fcRestartBtn">🔄 Làm lại</button>
+    <!-- ═══ FLASHCARD PAGE ══════════════════════════════ -->
+    <div class="page" id="flashcardPage">
+      <div class="container tools-page">
+        <div class="tools-header">
+          <h1>🃏 Flashcard — Ôn luyện nhanh</h1>
+          <p>Click thẻ để lật. Phím tắt: <kbd>Space</kbd> lật, <kbd>←→</kbd> điều hướng, <kbd>K</kbd> Đã nhớ,
+            <kbd>D</kbd> Chưa nhớ.
+          </p>
         </div>
-      </div>
-      <div class="progress-bar" style="margin-bottom:20px"><div class="progress-bar-fill" id="fcProgressBar" style="width:5%"></div></div>
-      <div class="flashcard-wrapper" id="flashcardWrapper">
-        <div class="flashcard-inner">
-          <div class="flashcard-front">
-            <div class="card-label">📌 Câu hỏi</div>
-            <div class="card-text" id="fcFront">Đang tải...</div>
-            <div class="card-flip-hint">👆 Click để xem đáp án</div>
+        <div class="chapter-filter" id="fcChapterFilter"></div>
+        <div class="flashcard-section">
+          <div class="flashcard-progress-header">
+            <div class="flashcard-count">Thẻ <span id="fcCurrentNum">1</span> / <span id="fcTotalNum">20</span></div>
+            <div style="font-size:0.78rem;color:var(--text-muted)" id="fcChapterLabel"></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" id="fcShuffleBtn">🔀 Ngẫu nhiên</button>
+              <button class="btn btn-ghost btn-sm" id="fcRestartBtn">🔄 Làm lại</button>
+            </div>
           </div>
-          <div class="flashcard-back">
-            <div class="card-label">✅ Đáp án</div>
-            <div class="card-answer" id="fcBack"></div>
-            <div class="card-flip-hint">👆 Click để lật lại</div>
+          <div class="progress-bar" style="margin-bottom:20px">
+            <div class="progress-bar-fill" id="fcProgressBar" style="width:5%"></div>
+          </div>
+          <div class="flashcard-wrapper" id="flashcardWrapper">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <div class="card-label">📌 Câu hỏi</div>
+                <div class="card-text" id="fcFront">Đang tải...</div>
+                <div class="card-flip-hint">👆 Click để xem đáp án</div>
+              </div>
+              <div class="flashcard-back">
+                <div class="card-label">✅ Đáp án</div>
+                <div class="card-answer" id="fcBack"></div>
+                <div class="card-flip-hint">👆 Click để lật lại</div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-verdict">
+            <button class="verdict-btn verdict-dontknow" id="fcDontKnowBtn">❌ Chưa nhớ</button>
+            <button class="fc-nav-btn" id="fcPrevBtn">‹</button>
+            <div class="fc-center-info">
+              <div class="fc-card-num" id="fcCurNum2">1</div>
+              <div class="fc-of">/ <span id="fcTotNum2">20</span></div>
+            </div>
+            <button class="fc-nav-btn" id="fcNextBtn">›</button>
+            <button class="verdict-btn verdict-know" id="fcKnowBtn">✅ Đã nhớ</button>
+          </div>
+          <div style="text-align:center;margin-bottom:16px">
+            <button class="btn btn-outline" id="fcFlipBtn">🔄 Lật thẻ (Space)</button>
+          </div>
+          <div class="fc-stats">
+            <div class="fc-stat fc-stat-know">
+              <div class="fc-stat-num" id="fcKnowCount">0</div>
+              <div class="fc-stat-label">✅ Đã nhớ</div>
+            </div>
+            <div class="fc-stat fc-stat-dontknow">
+              <div class="fc-stat-num" id="fcDontKnowCount">0</div>
+              <div class="fc-stat-label">❌ Chưa nhớ</div>
+            </div>
+            <div class="fc-stat fc-stat-skipped">
+              <div class="fc-stat-num" id="fcSkippedCount">0</div>
+              <div class="fc-stat-label">⏭️ Bỏ qua</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="flashcard-verdict">
-        <button class="verdict-btn verdict-dontknow" id="fcDontKnowBtn">❌ Chưa nhớ</button>
-        <button class="fc-nav-btn" id="fcPrevBtn">‹</button>
-        <div class="fc-center-info"><div class="fc-card-num" id="fcCurNum2">1</div><div class="fc-of">/ <span id="fcTotNum2">20</span></div></div>
-        <button class="fc-nav-btn" id="fcNextBtn">›</button>
-        <button class="verdict-btn verdict-know" id="fcKnowBtn">✅ Đã nhớ</button>
-      </div>
-      <div style="text-align:center;margin-bottom:16px">
-        <button class="btn btn-outline" id="fcFlipBtn">🔄 Lật thẻ (Space)</button>
-      </div>
-      <div class="fc-stats">
-        <div class="fc-stat fc-stat-know"><div class="fc-stat-num" id="fcKnowCount">0</div><div class="fc-stat-label">✅ Đã nhớ</div></div>
-        <div class="fc-stat fc-stat-dontknow"><div class="fc-stat-num" id="fcDontKnowCount">0</div><div class="fc-stat-label">❌ Chưa nhớ</div></div>
-        <div class="fc-stat fc-stat-skipped"><div class="fc-stat-num" id="fcSkippedCount">0</div><div class="fc-stat-label">⏭️ Bỏ qua</div></div>
-      </div>
     </div>
-  </div>
-</div>
 
-<!-- ═══ QUIZ PAGE ════════════════════════════════════ -->
-<div class="page" id="quizPage">
-  <div class="container tools-page">
-    <div class="tools-header"><h1>📝 Quiz Trắc nghiệm</h1><p>Kiểm tra kiến thức với bộ câu hỏi chuẩn thi môn Tư tưởng Hồ Chí Minh.</p></div>
-    <div class="chapter-filter" id="quizChapterFilter"></div>
-    <div class="quiz-section" id="quizStart">
-      <div class="quiz-start">
-        <h2>Chọn chế độ luyện tập</h2>
-        <p>Lựa chọn phù hợp với mục tiêu học tập của bạn</p>
-        <div class="quiz-mode-grid" style="max-width:640px;margin:0 auto 28px">
-          <div class="quiz-mode-card" data-mode="practice"><div class="quiz-mode-icon">🎯</div><div class="quiz-mode-title">Luyện tập</div><div class="quiz-mode-desc">10 câu, không giới hạn thời gian. Xem giải thích sau mỗi câu.</div></div>
-          <div class="quiz-mode-card" data-mode="exam"><div class="quiz-mode-icon">⏱️</div><div class="quiz-mode-title">Thi thử</div><div class="quiz-mode-desc">15 câu, đếm ngược thời gian. Mô phỏng thi thật.</div></div>
-          <div class="quiz-mode-card" data-mode="chapter"><div class="quiz-mode-icon">📚</div><div class="quiz-mode-title">Theo chương</div><div class="quiz-mode-desc">Tất cả câu hỏi thuộc chương đã chọn.</div></div>
+    <!-- ═══ QUIZ PAGE ════════════════════════════════════ -->
+    <div class="page" id="quizPage">
+      <div class="container tools-page">
+        <div class="tools-header">
+          <h1>📝 Quiz Trắc nghiệm</h1>
+          <p>Kiểm tra kiến thức với bộ câu hỏi chuẩn thi môn Tư tưởng Hồ Chí Minh.</p>
         </div>
-        <button class="btn btn-primary btn-lg btn-shimmer" id="startQuizBtn">🚀 Bắt đầu Quiz</button>
-      </div>
-    </div>
-    <div class="quiz-section" id="quizActive">
-      <div class="quiz-header">
-        <div class="quiz-progress-text" id="quizProgressText">Câu <strong>1</strong> / 10</div>
-        <div class="quiz-timer" id="quizTimerWrap" style="display:none">⏱ <span id="quizTimerDisplay">15:00</span></div>
-        <div class="quiz-score-badge" id="quizScoreDisplay">0 điểm</div>
-      </div>
-      <div class="progress-bar" style="margin-bottom:16px;height:8px"><div class="progress-bar-fill" id="quizProgressBar" style="width:0%"></div></div>
-      <div class="quiz-dots" id="quizDots"></div>
-      <div class="quiz-question-card">
-        <div class="quiz-q-number" id="quizQNumber">Câu hỏi 1</div>
-        <div class="quiz-q-text" id="quizQText"></div>
-        <div class="quiz-options" id="quizOptions"></div>
-        <div class="quiz-explanation" id="quizExplanation"><div class="quiz-explanation-title">💡 Giải thích đáp án</div><div class="quiz-explanation-text" id="quizExplainText"></div></div>
-      </div>
-      <div class="quiz-nav">
-        <button class="btn btn-ghost" id="prevQuizBtn" disabled>← Trước</button>
-        <button class="btn btn-ghost" id="skipBtn">⏭ Bỏ qua</button>
-        <button class="btn btn-primary" id="nextQuizBtn">Tiếp theo →</button>
-      </div>
-    </div>
-    <div class="quiz-section" id="quizResult">
-      <div style="width:150px;height:150px;border-radius:50%;margin:0 auto 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative" id="resultCircle">
-        <div style="position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(var(--red-500) calc(var(--pct,0)*1%),var(--bg-tertiary) 0%)"></div>
-        <div style="width:130px;height:130px;border-radius:50%;background:white;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1">
-          <div id="resultPercent" style="font-size:2rem;font-weight:900;color:var(--text-primary)">0%</div>
-          <div style="font-size:0.7rem;color:var(--text-muted)">Kết quả</div>
-        </div>
-      </div>
-      <div class="result-grade" id="resultGrade">Hoàn thành!</div>
-      <p style="color:var(--text-muted);margin-bottom:24px">Xem chi tiết kết quả bài quiz của bạn.</p>
-      <div class="result-stats">
-        <div class="result-stat"><div class="result-stat-num" id="resultCorrect" style="color:var(--success)">0</div><div class="result-stat-label">✅ Đúng</div></div>
-        <div class="result-stat"><div class="result-stat-num" id="resultWrong" style="color:var(--error)">0</div><div class="result-stat-label">❌ Sai</div></div>
-        <div class="result-stat"><div class="result-stat-num" id="resultSkipped" style="color:var(--warning)">0</div><div class="result-stat-label">⏭ Bỏ qua</div></div>
-        <div class="result-stat"><div class="result-stat-num" id="resultScore" style="color:var(--gold-400)">0</div><div class="result-stat-label">🏆 Điểm</div></div>
-      </div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-primary" id="restartQuizBtn">🔄 Làm lại</button>
-        <button class="btn btn-outline" data-navigate="chat">🤖 Hỏi AI giải thích</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ MINDMAP PAGE ═════════════════════════════════ -->
-<div class="page" id="mindmapPage">
-  <div class="container tools-page">
-    <div class="tools-header"><h1>🗺️ Sơ đồ tư duy tương tác</h1><p>Khám phá hệ thống Tư tưởng HCM. Kéo di chuyển, cuộn chuột zoom, hover để xem chi tiết.</p></div>
-    <div class="mindmap-toolbar">
-      <select class="mindmap-topic-select" id="mmTopicSelect"><option value="0">🗺️ Toàn bộ hệ thống TTHCM</option></select>
-      <span style="font-size:0.78rem;color:var(--text-muted)">💡 Kéo thả • Cuộn để zoom • Hover để xem chi tiết</span>
-    </div>
-    <div class="mindmap-section">
-      <div class="mindmap-canvas-wrap" id="mindmapWrap">
-        <canvas id="mindmapCanvas"></canvas>
-        <div class="mm-tooltip" id="mmTooltip"><div class="mm-tooltip-title"></div><div class="mm-tooltip-desc"></div></div>
-        <div class="mindmap-controls">
-          <button class="mm-ctrl-btn" id="mmZoomIn" title="Phóng to">+</button>
-          <button class="mm-ctrl-btn" id="mmZoomOut" title="Thu nhỏ">−</button>
-          <button class="mm-ctrl-btn" id="mmReset" title="Đặt lại">⌂</button>
-        </div>
-        <div class="mindmap-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#c41e3a"></div>Trung tâm</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#d4a017"></div>Chủ đề chính</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#4a90d9"></div>Nhánh con</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CASE STUDY PAGE ══════════════════════════════ -->
-<div class="page" id="casestudyPage">
-  <div class="container tools-page">
-    <div class="tools-header"><h1>📋 Tình huống phân tích</h1><p>Vận dụng Tư tưởng Hồ Chí Minh để phân tích các tình huống thực tế. Rèn kỹ năng lập luận.</p></div>
-    <div class="case-study-list" id="caseStudyList"></div>
-    <div class="card card-red" style="margin-top:28px;text-align:center;padding:32px">
-      <div style="font-size:2rem;margin-bottom:12px">🤖</div>
-      <h4 style="margin-bottom:8px">Muốn phân tích tình huống khác?</h4>
-      <p style="font-size:0.875rem;margin-bottom:18px">Mô tả tình huống và AI sẽ giúp phân tích theo Tư tưởng Hồ Chí Minh.</p>
-      <button class="btn btn-primary" data-navigate="chat">🤖 Hỏi Trợ lý AI</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CHAPTERS PAGE ════════════════════════════════ -->
-<div class="page" id="chaptersPage">
-  <div class="container tools-page">
-    <div class="tools-header"><h1>📚 Các chương học</h1><p>Nội dung môn Tư tưởng Hồ Chí Minh theo 6 chương chính. Click vào chương để ôn tập.</p></div>
-    <div class="chapter-resource-block" style="margin:0 0 28px">
-      <p style="font-size:1rem;line-height:1.7;margin:0 0 14px;color:var(--text-secondary)">
-        Trợ lý AI hướng dẫn học tư tưởng HCM :
-        <a href="https://chatgpt.com/g/g-69dde52117788191b5d2a29d6fde8493-hcm-gpt" target="_blank" rel="noopener noreferrer" style="color:var(--red-500);font-weight:800;text-decoration:none">
-          Trợ lý AI
-        </a>
-      </p>
-      <p style="font-size:1rem;line-height:1.7;margin:0 0 14px;color:var(--text-secondary)">
-        Sổ tay nghiên cứu:
-        <a href="https://notebooklm.google.com/notebook/d41bc23c-3ef8-4a74-8761-49f16141e46f" target="_blank" rel="noopener noreferrer" style="color:var(--red-500);font-weight:800;text-decoration:none">
-          NotebookLM
-        </a>
-      </p>
-      <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/372600a5dd.html" style="border:1px solid lightgray;width:100%;height:400px;border-radius:8px;background:white"></iframe>
-    </div>
-    <div class="chapter-cards-grid" id="chaptersGrid"></div>
-  </div>
-</div>
-
-</div><!-- page-wrapper -->
-
-<!-- ═══ AUTH MODAL ═══════════════════════════════════ -->
-<div class="modal-overlay auth-modal" id="authModal">
-  <div class="modal">
-    <button class="modal-close" id="authModalClose">✕</button>
-    <div class="auth-header">
-      <div class="auth-icon">⭐</div>
-      <h2>TTHCM AI</h2>
-      <p>Trợ lý học Tư tưởng Hồ Chí Minh thông minh</p>
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="authTabLogin">Đăng nhập</button>
-      <button class="auth-tab" id="authTabRegister">Đăng ký</button>
-    </div>
-    <div class="auth-social">
-      <button class="social-btn" type="button" id="googleLoginBtn"><span>G</span> Google</button>
-      <button class="social-btn" onclick="showToast('🔗','Tính năng đang phát triển.','info')"><span>📘</span> Facebook</button>
-    </div>
-    <div class="auth-divider">hoặc dùng email</div>
-
-    <!-- Login -->
-    <div class="auth-form-panel active" id="loginPanel">
-      <form id="loginForm">
-        <div class="form-group">
-          <label class="form-label" for="loginEmail">Email</label>
-          <div class="input-icon-wrap"><span class="input-icon">✉</span><input class="form-input" type="email" id="loginEmail" placeholder="email@truong.edu.vn" autocomplete="email"></div>
-          <div class="form-error" id="loginEmailErr"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="loginPassword">Mật khẩu <a class="forgot-pw" href="#" onclick="showToast('📧','Liên hệ admin để đặt lại mật khẩu.','info');return false">Quên mật khẩu?</a></label>
-          <div class="input-icon-wrap" style="position:relative">
-            <span class="input-icon">🔒</span>
-            <input class="form-input" type="password" id="loginPassword" placeholder="Mật khẩu" autocomplete="current-password">
-            <button type="button" class="input-toggle-pw">👁️</button>
+        <div class="chapter-filter" id="quizChapterFilter"></div>
+        <div class="quiz-section" id="quizStart">
+          <div class="quiz-start">
+            <h2>Chọn chế độ luyện tập</h2>
+            <p>Lựa chọn phù hợp với mục tiêu học tập của bạn</p>
+            <div class="quiz-mode-grid" style="max-width:640px;margin:0 auto 28px">
+              <div class="quiz-mode-card" data-mode="practice">
+                <div class="quiz-mode-icon">🎯</div>
+                <div class="quiz-mode-title">Luyện tập</div>
+                <div class="quiz-mode-desc">10 câu, không giới hạn thời gian. Xem giải thích sau mỗi câu.</div>
+              </div>
+              <div class="quiz-mode-card" data-mode="exam">
+                <div class="quiz-mode-icon">⏱️</div>
+                <div class="quiz-mode-title">Thi thử</div>
+                <div class="quiz-mode-desc">15 câu, đếm ngược thời gian. Mô phỏng thi thật.</div>
+              </div>
+              <div class="quiz-mode-card" data-mode="chapter">
+                <div class="quiz-mode-icon">📚</div>
+                <div class="quiz-mode-title">Theo chương</div>
+                <div class="quiz-mode-desc">Tất cả câu hỏi thuộc chương đã chọn.</div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-lg btn-shimmer" id="startQuizBtn">🚀 Bắt đầu Quiz</button>
           </div>
-          <div class="form-error" id="loginPassErr"></div>
         </div>
-        <button type="submit" class="btn btn-primary auth-submit btn-shimmer" data-label="🚀 Đăng nhập">🚀 Đăng nhập</button>
-      </form>
-      <div class="auth-footer">Chưa có tài khoản? <button onclick="AuthUI.switchTab('register')">Đăng ký ngay</button></div>
-      <div class="auth-demo-hint">💡 Demo: <code>demo@tthcm.edu.vn</code> / <code>Demo123!</code></div>
+        <div class="quiz-section" id="quizActive">
+          <div class="quiz-header">
+            <div class="quiz-progress-text" id="quizProgressText">Câu <strong>1</strong> / 10</div>
+            <div class="quiz-timer" id="quizTimerWrap" style="display:none">⏱ <span id="quizTimerDisplay">15:00</span>
+            </div>
+            <div class="quiz-score-badge" id="quizScoreDisplay">0 điểm</div>
+          </div>
+          <div class="progress-bar" style="margin-bottom:16px;height:8px">
+            <div class="progress-bar-fill" id="quizProgressBar" style="width:0%"></div>
+          </div>
+          <div class="quiz-dots" id="quizDots"></div>
+          <div class="quiz-question-card">
+            <div class="quiz-q-number" id="quizQNumber">Câu hỏi 1</div>
+            <div class="quiz-q-text" id="quizQText"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-explanation" id="quizExplanation">
+              <div class="quiz-explanation-title">💡 Giải thích đáp án</div>
+              <div class="quiz-explanation-text" id="quizExplainText"></div>
+            </div>
+          </div>
+          <div class="quiz-nav">
+            <button class="btn btn-ghost" id="prevQuizBtn" disabled>← Trước</button>
+            <button class="btn btn-ghost" id="skipBtn">⏭ Bỏ qua</button>
+            <button class="btn btn-primary" id="nextQuizBtn">Tiếp theo →</button>
+          </div>
+        </div>
+        <div class="quiz-section" id="quizResult">
+          <div
+            style="width:150px;height:150px;border-radius:50%;margin:0 auto 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative"
+            id="resultCircle">
+            <div
+              style="position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(var(--red-500) calc(var(--pct,0)*1%),var(--bg-tertiary) 0%)">
+            </div>
+            <div
+              style="width:130px;height:130px;border-radius:50%;background:white;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1">
+              <div id="resultPercent" style="font-size:2rem;font-weight:900;color:var(--text-primary)">0%</div>
+              <div style="font-size:0.7rem;color:var(--text-muted)">Kết quả</div>
+            </div>
+          </div>
+          <div class="result-grade" id="resultGrade">Hoàn thành!</div>
+          <p style="color:var(--text-muted);margin-bottom:24px">Xem chi tiết kết quả bài quiz của bạn.</p>
+          <div class="result-stats">
+            <div class="result-stat">
+              <div class="result-stat-num" id="resultCorrect" style="color:var(--success)">0</div>
+              <div class="result-stat-label">✅ Đúng</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="resultWrong" style="color:var(--error)">0</div>
+              <div class="result-stat-label">❌ Sai</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="resultSkipped" style="color:var(--warning)">0</div>
+              <div class="result-stat-label">⏭ Bỏ qua</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="resultScore" style="color:var(--gold-400)">0</div>
+              <div class="result-stat-label">🏆 Điểm</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-primary" id="restartQuizBtn">🔄 Làm lại</button>
+            <button class="btn btn-outline" data-navigate="chat">🤖 Hỏi AI giải thích</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Register -->
-    <div class="auth-form-panel" id="registerPanel">
-      <form id="registerForm">
-        <div class="form-group">
-          <label class="form-label" for="regName">Họ và tên</label>
-          <div class="input-icon-wrap"><span class="input-icon">👤</span><input class="form-input" type="text" id="regName" placeholder="Nguyễn Văn A" autocomplete="name"></div>
-          <div class="form-error" id="regNameErr"></div>
+    <!-- ═══ MINDMAP PAGE ═════════════════════════════════ -->
+    <div class="page" id="mindmapPage">
+      <div class="container tools-page">
+        <div class="tools-header">
+          <h1>🗺️ Sơ đồ tư duy tương tác</h1>
+          <p>Khám phá hệ thống Tư tưởng HCM. Kéo di chuyển, cuộn chuột zoom, hover để xem chi tiết.</p>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="regEmail">Email</label>
-          <div class="input-icon-wrap"><span class="input-icon">✉</span><input class="form-input" type="email" id="regEmail" placeholder="email@truong.edu.vn" autocomplete="email"></div>
-          <div class="form-error" id="regEmailErr"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="regPassword">Mật khẩu</label>
-          <div class="input-icon-wrap" style="position:relative">
-            <span class="input-icon">🔒</span>
-            <input class="form-input" type="password" id="regPassword" placeholder="Ít nhất 6 ký tự" autocomplete="new-password">
-            <button type="button" class="input-toggle-pw">👁️</button>
+        <div class="mindmap-toolbar">
+          <div class="mindmap-search-box">
+            <input type="text" id="mmSearchInput" placeholder="🔍 Tìm kiếm nodes (ví dụ: Nguồn gốc, Đạo đức...)"
+              class="mindmap-search-input">
+            <div id="mmSearchResults" class="mm-search-results"></div>
           </div>
-          <div class="pw-strength" id="pwStrengthWrap"><div class="pw-strength-bar"><div class="pw-strength-fill" id="pwStrengthBar"></div></div><div class="pw-strength-label" id="pwStrengthLabel"></div></div>
-          <div class="form-error" id="regPassErr"></div>
+          <select class="mindmap-topic-select" id="mmTopicSelect">
+            <option value="all">🗺️ Toàn bộ hệ thống TTHCM</option>
+          </select>
+          <span style="font-size:0.78rem;color:var(--text-muted)">💡 Kéo thả • Cuộn để zoom • Click node để mở rộng/thu
+            gọn</span>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="regConfirm">Xác nhận mật khẩu</label>
-          <div class="input-icon-wrap"><span class="input-icon">🔒</span><input class="form-input" type="password" id="regConfirm" placeholder="Nhập lại mật khẩu"></div>
-          <div class="form-error" id="regConfirmErr"></div>
+        <div class="mindmap-section">
+          <div class="mindmap-canvas-wrap" id="mindmapWrap">
+            <canvas id="mindmapCanvas"></canvas>
+            <div class="mm-tooltip" id="mmTooltip">
+              <div class="mm-tooltip-title"></div>
+              <div class="mm-tooltip-desc"></div>
+            </div>
+
+            <!-- Detail Panel -->
+            <div class="mm-detail-panel" id="mmDetailPanel">
+              <div class="mm-panel-header">
+                <div class="mm-panel-badge">Chủ đề</div>
+                <button class="mm-panel-close">×</button>
+              </div>
+              <h2 class="mm-panel-title">Tiêu đề nội dung</h2>
+              <div class="mm-panel-body">
+                <p class="mm-panel-desc">Mô tả chi tiết nội dung sẽ được hiển thị tại đây khi bạn nhấn vào một tập hợp ý
+                  nhỏ trong sơ đồ.</p>
+              </div>
+              <div class="mm-panel-footer">
+                <button class="btn btn-outline btn-sm" data-navigate="chat">🤖 Hỏi thêm về ý này</button>
+              </div>
+            </div>
+
+            <div class="mindmap-controls">
+              <button class="mm-ctrl-btn" id="mmZoomIn" title="Phóng to">+</button>
+              <button class="mm-ctrl-btn" id="mmZoomOut" title="Thu nhỏ">−</button>
+              <button class="mm-ctrl-btn" id="mmReset" title="Đặt lại">⌂</button>
+            </div>
+
+            <!-- Minimap Container -->
+            <div class="mindmap-minimap" id="mmMinimap"><canvas id="mmMinimapCanvas"></canvas></div>
+
+            <div class="mindmap-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#c41e3a"></div>Trung tâm
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#d4a017"></div>Chủ đề chính
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#4a90d9"></div>Nhánh con
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-checkbox"><input type="checkbox" id="regAgree"><span>Tôi đồng ý với <a href="#">điều khoản</a> và <a href="#">chính sách bảo mật</a>.</span></label>
-          <div class="form-error" id="regAgreeErr"></div>
+      </div>
+    </div>
+
+    <!-- ═══ CASE STUDY PAGE ══════════════════════════════ -->
+    <div class="page" id="casestudyPage">
+      <div class="container tools-page">
+        <div class="tools-header">
+          <h1>📋 Tình huống phân tích</h1>
+          <p>Vận dụng Tư tưởng Hồ Chí Minh để phân tích các tình huống thực tế. Rèn kỹ năng lập luận.</p>
         </div>
-        <button type="submit" class="btn btn-primary auth-submit btn-shimmer" data-label="🎉 Tạo tài khoản">🎉 Tạo tài khoản</button>
-      </form>
-      <div class="auth-footer">Đã có tài khoản? <button onclick="AuthUI.switchTab('login')">Đăng nhập</button></div>
+        <div class="case-study-list" id="caseStudyList"></div>
+        <div class="card card-red" style="margin-top:28px;text-align:center;padding:32px">
+          <div style="font-size:2rem;margin-bottom:12px">🤖</div>
+          <h4 style="margin-bottom:8px">Muốn phân tích tình huống khác?</h4>
+          <p style="font-size:0.875rem;margin-bottom:18px">Mô tả tình huống và AI sẽ giúp phân tích theo Tư tưởng Hồ Chí
+            Minh.</p>
+          <button class="btn btn-primary" data-navigate="chat">🤖 Hỏi Trợ lý AI</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CHAPTERS PAGE ════════════════════════════════ -->
+    <div class="page" id="chaptersPage">
+      <div class="container tools-page">
+        <div class="tools-header">
+          <h1>📚 Các chương học</h1>
+          <p>Nội dung môn Tư tưởng Hồ Chí Minh theo 8 chương chính. Click vào chương để ôn tập.</p>
+        </div>
+        <div class="chapter-resource-block" style="margin:0 0 28px">
+          <p style="font-size:1rem;line-height:1.7;margin:0 0 14px;color:var(--text-secondary)">
+            Trợ lý AI hướng dẫn học tư tưởng HCM :
+            <a href="https://chatgpt.com/g/g-69dde52117788191b5d2a29d6fde8493-hcm-gpt" target="_blank"
+              rel="noopener noreferrer" style="color:var(--red-500);font-weight:800;text-decoration:none">
+              Trợ lý AI
+            </a>
+          </p>
+          <p style="font-size:1rem;line-height:1.7;margin:0 0 14px;color:var(--text-secondary)">
+            Sổ tay nghiên cứu:
+            <a href="https://notebooklm.google.com/notebook/d41bc23c-3ef8-4a74-8761-49f16141e46f" target="_blank"
+              rel="noopener noreferrer" style="color:var(--red-500);font-weight:800;text-decoration:none">
+              NotebookLM
+            </a>
+          </p>
+          <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe"
+            src="https://heyzine.com/flip-book/372600a5dd.html"
+            style="border:1px solid lightgray;width:100%;height:400px;border-radius:8px;background:white"></iframe>
+        </div>
+        <div class="chapter-cards-grid" id="chaptersGrid"></div>
+      </div>
+    </div>
+    <!-- ═══ GUIDE PAGE ═══════════════════════════════════ -->
+    <div class="page" id="guidePage">
+      <div class="container tools-page">
+        <div class="guide-layout">
+          <aside class="guide-sidebar">
+            <nav class="guide-nav">
+              <a href="#guide-intro" class="guide-nav-link active">🌟 Giới thiệu</a>
+              <a href="#guide-account" class="guide-nav-link">👤 Tài khoản</a>
+              <a href="#guide-chat" class="guide-nav-link">🤖 Trợ lý AI</a>
+              <a href="#guide-flashcard" class="guide-nav-link">🃏 Flashcard</a>
+              <a href="#guide-quiz" class="guide-nav-link">📝 Quiz</a>
+              <a href="#guide-mindmap" class="guide-nav-link">🗺️ Sơ đồ</a>
+              <a href="#guide-study" class="guide-nav-link">💡 Mẹo học</a>
+            </nav>
+          </aside>
+
+          <main class="guide-content">
+            <section id="guide-intro" class="guide-section">
+              <div class="tools-header" style="text-align:left; padding:0">
+                <h1>📖 Hướng dẫn sử dụng TTHCM AI</h1>
+                <p>Chào mừng bạn đến với lộ trình chinh phục môn Tư tưởng Hồ Chí Minh bằng sức mạnh AI.</p>
+              </div>
+              <div class="guide-card welcome-card">
+                <div class="guide-card-icon">🚀</div>
+                <div class="guide-card-content">
+                  <h3>Bắt đầu hành trình của bạn</h3>
+                  <p>Nền tảng này được thiết kế để biến những kiến thức lý luận khô khan thành những trải nghiệm tương
+                    tác sinh
+                    động. Hãy làm theo hướng dẫn dưới đây để tận dụng tối đa các công cụ.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="guide-account" class="guide-section">
+              <h2 class="guide-section-title">👤 1. Tài khoản & Đăng nhập</h2>
+              <div class="guide-steps">
+                <div class="guide-step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <p><strong>Đăng ký:</strong> Nhấn nút "Đăng ký" ở góc phải màn hình. Bạn nên dùng Email sinh viên để
+                      dễ
+                      quản lý.</p>
+                  </div>
+                </div>
+                <div class="guide-step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <p><strong>Lưu tiến độ:</strong> Khi hành động dưới tài khoản đã đăng nhập, mọi lịch sử Chat,
+                      Flashcard và Quiz sẽ được lưu trữ vĩnh viễn.</p>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="image-placeholder">
+                <p>📸 [Ảnh: Giao diện Form Đăng ký / Đăng nhập]</p>
+              </div> -->
+            </section>
+
+            <section id="guide-chat" class="guide-section">
+              <h2 class="guide-section-title">🤖 2. Trợ lý AI Chat</h2>
+              <p>Gia sư ảo hỗ trợ bạn 24/7 với kiến thức chuyên sâu về TTHCM.</p>
+              <div class="guide-subsections">
+                <div class="guide-card">
+                  <h4>💬 4 Chế độ học thông minh</h4>
+                  <ul>
+                    <li><strong>Hỏi & Đáp:</strong> Tương tác tự do.</li>
+                    <li><strong>Giải thích sâu:</strong> Phân tích lý luận chi tiết.</li>
+                    <li><strong>Luyện thi:</strong> AI đóng vai người kiểm tra.</li>
+                    <li><strong>Tóm tắt:</strong> Nhận ý chính nhanh chóng.</li>
+                  </ul>
+                </div>
+                <!-- <div class="guide-card">
+                  <h4>🎤 Điều khiển giọng nói</h4>
+                  <p>Nhấn biểu tượng 🎤 để đặt câu hỏi trực tiếp bằng tiếng Việt, rất tiện lợi khi đang di chuyển.</p>
+                </div> -->
+              </div>
+            </section>
+
+            <section id="guide-flashcard" class="guide-section">
+              <h2 class="guide-section-title">🃏 3. Flashcard 3D</h2>
+              <p>Ghi nhớ kiến thức qua các thẻ bài tương tác trực quan.</p>
+              <div class="guide-feature-grid">
+                <div class="guide-card">
+                  <h4>Logic học tập</h4>
+                  <p>Click thẻ để xem mặt sau. Dùng hệ thống "Đã nhớ/Chưa nhớ" để thuật toán tối ưu hóa việc lặp lại
+                    thẻ.</p>
+                </div>
+                <div class="guide-card">
+                  <h4>Phím tắt nhanh</h4>
+                  <p><kbd>Space</kbd>: Lật thẻ<br><kbd>←</kbd> <kbd>→</kbd>: Chuyển tiếp<br><kbd>K</kbd>: Nhớ /
+                    <kbd>D</kbd>: Quên
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section id="guide-quiz" class="guide-section">
+              <h2 class="guide-section-title">📝 4. Quiz Trắc nghiệm</h2>
+              <p>Thử thách bản thân với kho câu hỏi trắc nghiệm phong phú.</p>
+              <div class="guide-steps">
+                <div class="guide-step">
+                  <div class="step-num">✓</div>
+                  <div class="step-content">
+                    <p><strong>Thi thử:</strong> Chế độ có áp lực thời gian giúp bạn làm quen với nhịp độ phòng thi.</p>
+                  </div>
+                </div>
+                <div class="guide-step">
+                  <div class="step-num">✓</div>
+                  <div class="step-content">
+                    <p><strong>Học từ lỗi sai:</strong> Luôn nhấn xem "Giải thích 💡" sau mỗi câu trả lời để hiểu bản
+                      chất vấn đề.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="guide-mindmap" class="guide-section">
+              <h2 class="guide-section-title">🗺️ 5. Sơ đồ tư duy</h2>
+              <p>Cái nhìn toàn cảnh về hệ thống kiến thức đồ sộ.</p>
+              <div class="guide-card">
+                <p>Click vào các nút (nodes) để mở rộng các nhánh kiến thức. Di chuột qua để xem tóm tắt hoặc click để
+                  xem chi tiết trong bảng thông tin.</p>
+              </div>
+            </section>
+
+            <section id="guide-study" class="guide-section">
+              <h2 class="guide-section-title">💡 6. Mẹo học tập hiệu quả</h2>
+              <div class="tips-grid">
+                <div class="tip-item">🚀 <strong>Đa kênh:</strong> Kết hợp sơ đồ tư duy (tổng quát) và flashcard (chi
+                  tiết).</div>
+                <div class="tip-item">🧠 <strong>Sâu chuỗi:</strong> Dùng AI Chat để kết nối các sự kiện lịch sử với tư
+                  tưởng.</div>
+                <div class="tip-item">📅 <strong>Đều đặn:</strong> Mỗi ngày 15-20 phút hiệu quả hơn học "nhồi" 10 tiếng
+                  một ngày.</div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- page-wrapper -->
+
+  <!-- ═══ AUTH MODAL ═══════════════════════════════════ -->
+  <div class="modal-overlay auth-modal" id="authModal">
+    <div class="modal">
+      <button class="modal-close" id="authModalClose">✕</button>
+      <div class="auth-header">
+        <div class="auth-icon">⭐</div>
+        <h2>TTHCM AI</h2>
+        <p>Trợ lý học Tư tưởng Hồ Chí Minh thông minh</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="authTabLogin">Đăng nhập</button>
+        <button class="auth-tab" id="authTabRegister">Đăng ký</button>
+      </div>
+      <div class="auth-social">
+        <button class="social-btn" type="button" id="googleLoginBtn"><span>G</span> Google</button>
+        <button class="social-btn" onclick="showToast('🔗','Tính năng đang phát triển.','info')"><span>📘</span>
+          Facebook</button>
+      </div>
+      <div class="auth-divider">hoặc dùng email</div>
+
+      <!-- Login -->
+      <div class="auth-form-panel active" id="loginPanel">
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email</label>
+            <div class="input-icon-wrap"><span class="input-icon">✉</span><input class="form-input" type="email"
+                id="loginEmail" placeholder="email@truong.edu.vn" autocomplete="email"></div>
+            <div class="form-error" id="loginEmailErr"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Mật khẩu <a class="forgot-pw" href="#"
+                onclick="showToast('📧','Liên hệ admin để đặt lại mật khẩu.','info');return false">Quên mật
+                khẩu?</a></label>
+            <div class="input-icon-wrap" style="position:relative">
+              <span class="input-icon">🔒</span>
+              <input class="form-input" type="password" id="loginPassword" placeholder="Mật khẩu"
+                autocomplete="current-password">
+              <button type="button" class="input-toggle-pw">👁️</button>
+            </div>
+            <div class="form-error" id="loginPassErr"></div>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit btn-shimmer" data-label="🚀 Đăng nhập">🚀 Đăng
+            nhập</button>
+        </form>
+        <div class="auth-footer">Chưa có tài khoản? <button onclick="AuthUI.switchTab('register')">Đăng ký ngay</button>
+        </div>
+        <!-- <div class="auth-demo-hint">💡 Demo: <code>demo@tthcm.edu.vn</code> / <code>Demo123!</code></div> -->
+      </div>
+
+      <!-- Register -->
+      <div class="auth-form-panel" id="registerPanel">
+        <form id="registerForm">
+          <div class="form-group">
+            <label class="form-label" for="regName">Họ và tên</label>
+            <div class="input-icon-wrap"><span class="input-icon">👤</span><input class="form-input" type="text"
+                id="regName" placeholder="Nguyễn Văn A" autocomplete="name"></div>
+            <div class="form-error" id="regNameErr"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email</label>
+            <div class="input-icon-wrap"><span class="input-icon">✉</span><input class="form-input" type="email"
+                id="regEmail" placeholder="email@truong.edu.vn" autocomplete="email"></div>
+            <div class="form-error" id="regEmailErr"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Mật khẩu</label>
+            <div class="input-icon-wrap" style="position:relative">
+              <span class="input-icon">🔒</span>
+              <input class="form-input" type="password" id="regPassword" placeholder="Ít nhất 6 ký tự"
+                autocomplete="new-password">
+              <button type="button" class="input-toggle-pw">👁️</button>
+            </div>
+            <div class="pw-strength" id="pwStrengthWrap">
+              <div class="pw-strength-bar">
+                <div class="pw-strength-fill" id="pwStrengthBar"></div>
+              </div>
+              <div class="pw-strength-label" id="pwStrengthLabel"></div>
+            </div>
+            <div class="form-error" id="regPassErr"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regConfirm">Xác nhận mật khẩu</label>
+            <div class="input-icon-wrap"><span class="input-icon">🔒</span><input class="form-input" type="password"
+                id="regConfirm" placeholder="Nhập lại mật khẩu"></div>
+            <div class="form-error" id="regConfirmErr"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-checkbox"><input type="checkbox" id="regAgree"><span>Tôi đồng ý với <a href="#">điều
+                  khoản</a> và <a href="#">chính sách bảo mật</a>.</span></label>
+            <div class="form-error" id="regAgreeErr"></div>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit btn-shimmer" data-label="🎉 Tạo tài khoản">🎉 Tạo tài
+            khoản</button>
+        </form>
+        <div class="auth-footer">Đã có tài khoản? <button onclick="AuthUI.switchTab('login')">Đăng nhập</button></div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Toast -->
-<div class="toast-container" id="toastContainer"></div>
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
 
-<!-- Scripts -->
-<script src="/js/data.js"></script>
-<script src="/js/api.js"></script>
-<script src="/js/auth.js"></script>
-<script src="/js/chat.js"></script>
-<script src="/js/tools.js"></script>
-<script src="/js/app.js"></script>
+  <!-- Scripts -->
+  <script src="/js/data.js?v=2.0"></script>
+  <script src="/js/api.js?v=2.0"></script>
+  <script src="/js/auth.js?v=2.0"></script>
+  <script src="/js/chat.js?v=2.0"></script>
+  <script src="/js/tools.js?v=2.0"></script>
+  <script src="/js/app.js?v=2.0"></script>
 </body>
+
 </html>
