@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Router.register('mindmap',    () => { setTimeout(() => { MindmapEngine.init(); }, 120); });
   Router.register('casestudy',  () => { buildCaseStudies(); });
   Router.register('chapters',   () => { buildChaptersPage(); });
+  Router.register('about',      () => {});
   Router.register('guide',      () => { initGuideScrolling(); });
 
   // Nav auth buttons

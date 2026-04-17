@@ -51,7 +51,7 @@ app.use(helmet({
       fontSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'"],
-      frameSrc: ["'self'", "https://heyzine.com"],
+      frameSrc: ["'self'", "https://heyzine.com", "https://docs.google.com", "https://*.google.com", "https://*.googleusercontent.com"],
     },
   },
 }));
